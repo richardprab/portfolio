@@ -5,20 +5,21 @@ import { CompanyLogos } from "./components/CompanyLogos";
 import { HeroSection } from "./sections/HeroSection";
 import { ExperienceSection } from "./sections/ExperienceSection";
 import { PortfolioSection } from "./sections/PortfolioSection";
+import { AnimatedBackground } from "./components/AnimatedBackground";
 import { NAV_ITEMS, COMPANY_PLACEHOLDERS, EXPERIENCES, PORTFOLIO_ITEMS } from "./data/constants";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navigation items={NAV_ITEMS} />
+    <div className="min-h-screen bg-white relative">
+      <AnimatedBackground />
       
-      <HeroSection />
-      
-      <CompanyLogos companies={COMPANY_PLACEHOLDERS} />
-      
-      <ExperienceSection experiences={EXPERIENCES} />
-      
-      <PortfolioSection portfolioItems={PORTFOLIO_ITEMS} />
+      <div className="relative z-10">
+        <Navigation items={NAV_ITEMS} />
+        <HeroSection />
+        <CompanyLogos companies={COMPANY_PLACEHOLDERS} />
+        <ExperienceSection experiences={EXPERIENCES} />
+        <PortfolioSection portfolioItems={PORTFOLIO_ITEMS} />
+      </div>
     </div>
   );
 }

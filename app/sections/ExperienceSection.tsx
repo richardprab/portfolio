@@ -10,7 +10,7 @@ interface ExperienceSectionProps {
 
 export const ExperienceSection = ({ experiences }: ExperienceSectionProps) => {
   return (
-    <section className="py-12 sm:py-16 bg-[#fafafa]">
+    <section className="py-12 sm:py-16 bg-[#fafafa] backdrop-blur-sm relative z-0">
       <div className="mx-auto">
         <SectionHeader
           tag="Experience"

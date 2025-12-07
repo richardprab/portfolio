@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { Experience } from "../types";
 import { ANIMATION_DELAYS } from "../config/animations";
@@ -13,6 +13,7 @@ interface ExperienceItemProps {
 
 export const ExperienceItem = ({ experience, index }: ExperienceItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [imageError, setImageError] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
@@ -38,9 +39,9 @@ export const ExperienceItem = ({ experience, index }: ExperienceItemProps) => {
       style={{ y, opacity }}
     >
     <div className="py-8 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-16 xl:px-24">
-      <div className={`flex flex-col ${experience.image ? 'lg:flex-row lg:items-start' : ''} gap-6 sm:gap-8`}>
-        {/* Left side - Image (if available) */}
-        {experience.image && (
+      <div className={`flex flex-col ${experience.image && !imageError ? 'lg:flex-row lg:items-start' : ''} gap-6 sm:gap-8`}>
+        {/* Left side - Image (if available and not errored) */}
+        {experience.image && !imageError && (
           <div className="lg:w-56 xl:w-64 flex-shrink-0">
             <div className="relative aspect-video lg:aspect-square rounded-lg overflow-hidden bg-gray-200">
               <Image
@@ -49,8 +50,8 @@ export const ExperienceItem = ({ experience, index }: ExperienceItemProps) => {
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 256px"
-                onError={(e) => {
-                  e.currentTarget.src = '';
+                onError={() => {
+                  setImageError(true);
                 }}
               />
             </div>
