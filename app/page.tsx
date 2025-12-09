@@ -6,7 +6,7 @@ import { HeroSection } from "./sections/HeroSection";
 import { ExperienceSection } from "./sections/ExperienceSection";
 import { PortfolioSection } from "./sections/PortfolioSection";
 import { AnimatedBackground } from "./components/AnimatedBackground";
-import { NAV_ITEMS, COMPANY_PLACEHOLDERS, EXPERIENCES, PORTFOLIO_ITEMS } from "./data/constants";
+import { NAV_ITEMS, COMPANY_PLACEHOLDERS } from "./data/constants";
 
 export default function Home() {
   return (
@@ -17,8 +17,8 @@ export default function Home() {
         <Navigation items={NAV_ITEMS} />
         <HeroSection />
         <CompanyLogos companies={COMPANY_PLACEHOLDERS} />
-        <ExperienceSection experiences={EXPERIENCES} />
-        <PortfolioSection portfolioItems={PORTFOLIO_ITEMS} />
+        <ExperienceSection />
+        <PortfolioSection />
       </div>
     </div>
   );

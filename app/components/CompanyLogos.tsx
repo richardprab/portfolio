@@ -33,7 +33,7 @@ export const CompanyLogos = ({ companies }: CompanyLogosProps) => {
             {[...companies, ...companies].map((company, index) => (
               <div
                 key={`company-${index}-${company}`}
-                className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-100 rounded-full text-black text-xs sm:text-sm font-medium whitespace-nowrap flex-shrink-0"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-100 rounded-full text-black text-xs sm:text-sm font-medium whitespace-nowrap flex-shrink-0 shadow-sm"
               >
                 {company}
               </div>

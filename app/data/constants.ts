@@ -18,57 +18,41 @@ export const COMPANY_PLACEHOLDERS = [
 
 export const EXPERIENCES: Experience[] = [
   {
-    title: "Graphic Designer at Dewa-Dewi Tech",
+    title: "Software Engineer Intern @Horizon Labs",
     description: [
-      "- Graphic Designer at Dewa-Dewi Tech, creating creative and functional visual designs to support brands and digital products.",
-      "- Led design initiatives for multiple client projects, resulting in increased brand recognition.",
-      "- Collaborated with cross-functional teams to deliver high-quality visual assets.",
+      "- Orchestrated high-throughput backend services using FastAPI, seamlessly integrating data pipelines from Microsoft Azure to power core application features.",
+      "- Built responsive front-end components (React, TypeScript) for data visualization and platform management, supporting agile project execution.",
     ],
-    dates: "2015 - 2017",
-    image: "/experience-1.jpg", // Add your image path here
-    technologies: ["Photoshop", "Illustrator", "InDesign"],
+    dates: "Jul. 2025 – Oct. 2025",
+    technologies: ["FastAPI", "SQLAlchemy", "React", "Next.js", "Tailwind CSS", "TypeScript", "MS SQL"],
   },
   {
-    title: "UI/UX Designer at Odama Studio",
+    title: "Data Analyst Intern @GoTrade (YC S19)",
     description: [
-      "UI/UX Designer at Odama Studio, creating intuitive and engaging digital experiences through functional and aesthetic design.",
-      "Designed user interfaces for web and mobile applications used by thousands of users.",
-      "Conducted user research and usability testing to inform design decisions.",
+      "- Interpreted a dataset of 500k+ transaction records to extract actionable intelligence, directly supporting strategic planning for a user base of 100k+ active users.",
+      "- Compiled weekly insight reports identifying key churn risks, leading to a 10% improvement in targeted retention workflow efficiency.",
+      "- Automated KPI dashboards using SQL and Python, eliminating manual data entry and saving 5 hours of managerial time per week.",
     ],
-    dates: "2017 - 2019",
-    image: "/experience-2.jpg", // Add your image path here
-    technologies: ["Figma", "Sketch", "Prototyping"],
+    dates: "May 2025 – Aug. 2025",
+    technologies: ["SQL", "Python", "PostgreSQL", "AWS", "Lark", "TablePlus"],
   },
   {
-    title: "UX Researcher at Korsa Studio",
+    title: "Systems Administrator Intern @CHB Technology Pte Ltd",
     description: [
-      "UX Researcher at Korsa Studio, connecting data and design to create intuitive and effective user experiences.",
-      "Performed comprehensive user research studies to identify pain points and opportunities.",
-      "Presented findings to stakeholders and influenced product strategy decisions.",
+      "- Administered Microsoft Azure environments for 10+ enterprise clients, ensuring high availability for critical virtual machines through proactive monitoring.",
+      "- Developed key UI components for an internal administrative portal using HTML/CSS and JavaScript, enhancing task efficiency and usability for the support team."
     ],
-    dates: "2018 - 2021",
-    image: "/experience-3.jpg", // Add your image path here
-    technologies: ["User Testing", "Analytics", "Research"],
-  },
-  {
-    title: "Product Designer at Apple. Inc",
-    description: [
-      "Product Designer at Apple Inc., designing innovative experiences that connect technology and aesthetics to create iconic products",
-      "Designing next-generation product experiences for millions of users worldwide.",
-      "Working closely with engineering teams to bring designs to life.",
-    ],
-    dates: "2021 - Now",
-    image: "/experience-4.jpg", // Add your image path here
-    technologies: ["Design Systems", "Prototyping", "Collaboration"],
+    dates: "Feb. 2022 – Aug. 2022",
+    technologies: ["Microsoft Azure", "Windows Server"],
   },
 ];
 
 export const PORTFOLIO_ITEMS: PortfolioItem[] = [
-  { id: "1", title: "Portfolio Item 1", image: "", category: "Dashboard" },
-  { id: "2", title: "Portfolio Item 2", image: "", category: "Saas" },
-  { id: "3", title: "Portfolio Item 3", image: "", category: "Product" },
-  { id: "4", title: "Portfolio Item 4", image: "", category: "Dashboard" },
-  { id: "5", title: "Portfolio Item 5", image: "", category: "Saas" },
-  { id: "6", title: "Portfolio Item 6", image: "", category: "Product" },
+  { id: "1", title: "Portfolio Item 1", image: "" },
+  { id: "2", title: "Portfolio Item 2", image: "" },
+  { id: "3", title: "Portfolio Item 3", image: "" },
+  { id: "4", title: "Portfolio Item 4", image: "" },
+  { id: "5", title: "Portfolio Item 5", image: "" },
+  { id: "6", title: "Portfolio Item 6", image: "" },
 ];
 

@@ -10,7 +10,6 @@ export interface PortfolioItem {
   id: string;
   title: string;
   image: string;
-  category: string;
 }
 
 export interface NavItem {
