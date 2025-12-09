@@ -38,7 +38,7 @@ export const PortfolioSection = () => {
   }, []);
 
   return (
-    <section className="py-12 sm:py-16 relative z-0">
+    <section id="portfolio" className="py-12 sm:py-16 relative z-0">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           tag="Portfolio"

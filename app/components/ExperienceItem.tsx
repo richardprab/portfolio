@@ -85,7 +85,7 @@ export const ExperienceItem = ({ experience, index }: ExperienceItemProps) => {
               {experience.technologies.map((tech, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-xs sm:text-sm text-gray-700 shadow-sm"
+                  className="px-3 py-1 rounded-full text-xs sm:text-sm text-gray-700 shadow-sm bg-white border border-gray-200"
                 >
                   {tech}
                 </span>

@@ -41,7 +41,7 @@ export const ExperienceSection = () => {
   }, []);
 
   return (
-    <section className="py-12 sm:py-16 bg-[#fafafa] backdrop-blur-sm relative z-0">
+    <section id="experience" className="py-12 sm:py-16 relative z-0">
       <div className="mx-auto">
         <SectionHeader
           tag="Experience"

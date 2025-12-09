@@ -30,6 +30,7 @@ export const HeroSection = () => {
 
   return (
     <motion.main 
+      id="technical-skills"
       ref={heroRef}
       style={{ opacity: heroOpacity, y: heroY, scale: heroScale }}
       className="px-4 sm:px-8 lg:px-16 xl:px-24 pt-4 pb-8 sm:pb-16"
