@@ -34,9 +34,10 @@ export const HeroSection = () => {
       style={{ opacity: heroOpacity, y: heroY, scale: heroScale }}
       className="px-4 sm:px-8 lg:px-16 xl:px-24 pt-4 pb-8 sm:pb-16"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 max-w-7xl mx-auto min-h-[60vh] sm:min-h-[70vh]">
-        <div className="flex flex-col justify-end order-2 lg:order-1">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 max-w-7xl mx-auto min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh] relative">
+        <div className="flex flex-col justify-center lg:justify-end order-2 lg:order-1 pb-8 lg:pb-0 relative z-0">
           <motion.div
+            className="relative z-0"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -55,9 +56,9 @@ export const HeroSection = () => {
           </motion.div>
         </div>
 
-        <div className="flex flex-col items-end lg:items-end relative order-1 lg:order-2">
+        <div className="flex flex-col items-end lg:items-end relative order-1 lg:order-2 pt-8 lg:pt-0 z-20">
           <motion.div
-            className="mb-4 sm:mb-6 relative w-[66.67%] max-w-lg lg:max-w-xl xl:max-w-2xl h-48 sm:h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden"
+            className="mb-4 sm:mb-6 relative w-[66.67%] max-w-lg lg:max-w-xl xl:max-w-2xl h-48 sm:h-56 md:h-64 lg:h-80 xl:h-96 rounded-lg overflow-hidden absolute right-4 sm:right-8 top-0 lg:absolute lg:right-0 lg:top-0 lg:-ml-8 xl:-ml-12 z-30"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}

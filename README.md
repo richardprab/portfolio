@@ -8,7 +8,7 @@ A modern portfolio website built with Next.js, featuring dynamic content managem
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 - **Animations:** Framer Motion
-- **Database:** MongoDB Atlas with Mongoose
+- **Database:** MongoDB
 - **Package Manager:** pnpm
 
 ## Development
@@ -33,8 +33,3 @@ pnpm seed
 pnpm build
 pnpm start
 ```
-
-
-## License
-
-Private
