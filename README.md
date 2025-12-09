@@ -11,27 +11,6 @@ A modern portfolio website built with Next.js, featuring dynamic content managem
 - **Database:** MongoDB Atlas with Mongoose
 - **Package Manager:** pnpm
 
-## Prerequisites
-
-- Node.js 18+ 
-- pnpm
-- MongoDB Atlas account
-
-## Installation
-
-```bash
-pnpm install
-```
-
-## Environment Setup
-
-1. Copy `.env.local.example` to `.env.local`
-2. Add your MongoDB Atlas connection string:
-
-```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority
-```
-
 ## Development
 
 ```bash
@@ -55,18 +34,6 @@ pnpm build
 pnpm start
 ```
 
-## Project Structure
-
-```
-app/
-  api/          # API routes
-  components/   # React components
-  sections/     # Page sections
-  types/        # TypeScript types
-lib/            # Utilities (MongoDB connection)
-models/         # Mongoose models
-scripts/        # Database seeding
-```
 
 ## License
 
