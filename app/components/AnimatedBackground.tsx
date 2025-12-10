@@ -120,7 +120,7 @@ export const AnimatedBackground = () => {
 
   return (
     <div 
-      className="fixed inset-0 z-0 overflow-hidden pointer-events-none"
+      className="fixed inset-0 z-0 overflow-hidden pointer-events-none" 
       aria-hidden="true"
       style={{ 
         zIndex: 0,
@@ -133,9 +133,9 @@ export const AnimatedBackground = () => {
         height: '100vh'
       }}
     >
-      <motion.div
-        className="absolute rounded-full"
-        style={{
+        <motion.div
+          className="absolute rounded-full"
+          style={{
           width: '650px',
           height: '650px',
           left: 0,
@@ -161,8 +161,8 @@ export const AnimatedBackground = () => {
           x: blob2X,
           y: blob2Y,
           rotate: blob2Rotate,
-        }}
-      />
+          }}
+        />
     </div>
   );
 };

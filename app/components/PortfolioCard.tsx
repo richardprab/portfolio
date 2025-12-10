@@ -23,29 +23,29 @@ export const PortfolioCard = ({ item, index, onOpenModal }: PortfolioCardProps) 
   return (
     <motion.article
       className="relative aspect-[4/3] bg-gray-200 rounded-lg overflow-hidden group cursor-pointer"
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ 
-        duration: 0.6, 
-        delay: index * ANIMATION_DELAYS.PORTFOLIO_ITEM,
-        ease: EASING_CURVES.SMOOTH
-      }}
-      whileHover={{ 
-        scale: 1.05,
-        y: -5,
-        transition: { duration: 0.3 }
-      }}
+    initial={{ opacity: 0, y: 50, scale: 0.9 }}
+    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ 
+      duration: 0.6, 
+      delay: index * ANIMATION_DELAYS.PORTFOLIO_ITEM,
+      ease: EASING_CURVES.SMOOTH
+    }}
+    whileHover={{ 
+      scale: 1.05,
+      y: -5,
+      transition: { duration: 0.3 }
+    }}
       onClick={handleCardClick}
-    >
+  >
       {item.image && !imageError ? (
         <div className="relative w-full h-full">
-          <Image
-            src={item.image}
-            alt={item.title}
-            fill
+      <Image
+        src={item.image}
+        alt={item.title}
+        fill
             className="object-cover object-center transition-transform duration-300 group-hover:scale-110"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             quality={90}
             priority={index < 3}
             onError={() => {
@@ -54,14 +54,14 @@ export const PortfolioCard = ({ item, index, onOpenModal }: PortfolioCardProps) 
             style={{
               objectFit: 'cover',
               objectPosition: 'center',
-            }}
-          />
+        }}
+      />
         </div>
-      ) : (
-        <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-          <span className="text-gray-600 text-sm">{item.title}</span>
-        </div>
-      )}
+    ) : (
+      <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+        <span className="text-gray-600 text-sm">{item.title}</span>
+      </div>
+    )}
 
       {/* Hover Overlay with Description and Tech Stack */}
       <motion.div
@@ -104,8 +104,8 @@ export const PortfolioCard = ({ item, index, onOpenModal }: PortfolioCardProps) 
             <ExternalLink className="w-3.5 h-3.5" />
           </p>
         </motion.div>
-      </motion.div>
+  </motion.div>
     </motion.article>
-  );
+);
 };
 

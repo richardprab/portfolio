@@ -7,7 +7,7 @@ import type { ApiResponse } from '@/app/types/api';
 export async function GET(): Promise<NextResponse<ApiResponse<IPortfolioItem[]>>> {
   try {
     await connectDB();
-    const portfolioItems = await PortfolioItem.find({}).lean();
+    const portfolioItems = await PortfolioItem.find({}).sort({ title: 1 }).lean();
     
     return createSuccessResponse(portfolioItems, 200);
   } catch (error) {

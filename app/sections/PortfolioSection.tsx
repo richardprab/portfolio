@@ -25,9 +25,9 @@ export const PortfolioSection = () => {
 
   return (
     <section id="portfolio" className="py-12 sm:py-16 relative z-0">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeader
-          tag="Portfolio"
+    <div className="max-w-7xl mx-auto">
+      <SectionHeader
+        tag="Portfolio"
           title={<>A collection of projects<br />that showcase my work</>}
           description="A comprehensive showcase of my projects."
         />
@@ -47,16 +47,16 @@ export const PortfolioSection = () => {
         )}
         
         {!isLoading && !error && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {portfolioItems.map((item, index) => (
-              <PortfolioCard
-                key={item.id}
-                item={item}
-                index={index}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {portfolioItems.map((item, index) => (
+            <PortfolioCard
+              key={item.id}
+              item={item}
+              index={index}
                 onOpenModal={handleOpenModal}
-              />
-            ))}
-          </div>
+            />
+          ))}
+        </div>
         )}
       </div>
 
@@ -66,7 +66,7 @@ export const PortfolioSection = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
-    </section>
-  );
+  </section>
+);
 };
 

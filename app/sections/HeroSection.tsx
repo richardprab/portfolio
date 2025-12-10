@@ -30,12 +30,11 @@ export const HeroSection = () => {
 
   return (
     <motion.main 
-      id="technical-skills"
       ref={heroRef}
       style={{ opacity: heroOpacity, y: heroY, scale: heroScale }}
       className="pt-6 sm:pt-12 pb-16 sm:pb-20 lg:pt-4 lg:pb-8"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-16 max-w-7xl mx-auto min-h-[75vh] sm:min-h-[80vh] lg:min-h-[80vh] relative">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-10 lg:gap-16 max-w-7xl mx-auto min-h-[75vh] sm:min-h-[80vh] lg:min-h-[80vh] relative">
         {/* Mobile: Centered Layout, Desktop: Left Aligned */}
         <div className="flex flex-col justify-center items-center lg:items-start lg:justify-end order-2 lg:order-1 pb-0 lg:pb-0 relative z-0">
           <motion.div
@@ -64,7 +63,7 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Hi! I&apos;m someone who loves to code and create intuitive Digital Experiences.
+            Hi! I love creating things that matter and finding the 'why' behind them. I’m endlessly curious and always looking to learn something new.
           </motion.p>
         </div>
 
@@ -72,18 +71,19 @@ export const HeroSection = () => {
         <div className="flex flex-col items-center lg:items-end relative order-1 lg:order-2 pt-0 lg:pt-0 z-20">
           {/* Mobile Image - Modern Circular/Square with Shadow */}
           <motion.div
-            className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 aspect-square rounded-3xl overflow-hidden shadow-2xl lg:hidden mb-8"
+            className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 aspect-square rounded-3xl overflow-hidden shadow-2xl lg:hidden"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
           >
             <Image
-              src="/profile-image.JPG"
+              src="/profile_image.JPG"
               alt="Richard Prabowo - Software Engineer"
               fill
               className="object-cover"
               sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
               priority
+              unoptimized={process.env.NODE_ENV === 'development'}
               onError={(e) => {
                 e.currentTarget.src = '';
               }}
@@ -98,11 +98,12 @@ export const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <Image
-              src="/profile-image.JPG"
+              src="/profile_image.JPG"
               alt="Richard Prabowo - Software Engineer"
               fill
               className="object-cover rounded-lg"
               sizes="(max-width: 1024px) 66vw, (max-width: 1280px) 33vw, 22vw"
+              unoptimized={process.env.NODE_ENV === 'development'}
               onError={(e) => {
                 e.currentTarget.src = '';
               }}
@@ -116,9 +117,11 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            Hi! I&apos;m someone who loves to<br className="hidden lg:block" />
-            code and create intuitive<br className="hidden lg:block" />
-            Digital Experiences.
+            Hi! I love creating things that matter<br className="hidden lg:block"/>
+            and finding the 'why' behind them.<br className="hidden lg:block"/>
+            I’m endlessly curious and<br className="hidden lg:block"/> 
+            always looking to learn<br className="hidden lg:block"/>
+            something new.
           </motion.p>
         </div>
       </div>
