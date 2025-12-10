@@ -16,9 +16,16 @@ export const ExperienceSection = () => {
         const response = await fetch('/api/experience');
         const data = await response.json();
         
-        if (data.success) {
+        if (data.success && data.data) {
           // Transform MongoDB documents to match Experience interface
-          const items = data.data.map((item: any) => ({
+          const items = data.data.map((item: {
+            _id?: string;
+            title: string;
+            description: string[];
+            dates: string;
+            image?: string;
+            technologies?: string[];
+          }) => ({
             title: item.title,
             description: item.description,
             dates: item.dates,
@@ -27,11 +34,11 @@ export const ExperienceSection = () => {
           }));
           setExperiences(items);
         } else {
-          setError('Failed to load experiences');
+          setError(data.error || 'Failed to load experiences');
         }
       } catch (err) {
-        console.error('Error fetching experiences:', err);
-        setError('Failed to load experiences');
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load experiences';
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -42,7 +49,7 @@ export const ExperienceSection = () => {
 
   return (
     <section id="experience" className="py-12 sm:py-16 relative z-0">
-      <div className="mx-auto">
+      <div className="max-w-7xl mx-auto">
         <SectionHeader
           tag="Experience"
           title={<>A Yearly snapshot<br />of my technical progression</>}

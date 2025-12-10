@@ -11,7 +11,7 @@ interface SectionHeaderProps {
 
 export const SectionHeader = ({ tag, title, description }: SectionHeaderProps) => (
   <motion.div 
-    className="px-4 sm:px-8 lg:px-16 xl:px-24 pb-8 sm:pb-12"
+    className="pb-8 sm:pb-12"
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-80px" }}

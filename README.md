@@ -4,7 +4,7 @@ A modern portfolio website built with Next.js, featuring dynamic content managem
 
 ## Tech Stack
 
-- **Framework:** Next.js 16 (App Router)
+- **Framework:** Next.js
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 - **Animations:** Framer Motion

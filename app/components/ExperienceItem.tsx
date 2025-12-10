@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { Experience } from "../types";
-import { ANIMATION_DELAYS } from "../config/animations";
 
 interface ExperienceItemProps {
   experience: Experience;
@@ -38,7 +37,7 @@ export const ExperienceItem = ({ experience, index }: ExperienceItemProps) => {
       className="border-t border-gray-200 first:border-t-0"
       style={{ y, opacity }}
     >
-    <div className="py-8 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-16 xl:px-24">
+    <div className="py-8 sm:py-10 lg:py-12">
       <div className={`flex flex-col ${experience.image && !imageError ? 'lg:flex-row lg:items-start' : ''} gap-6 sm:gap-8`}>
         {/* Left side - Image (if available and not errored) */}
         {experience.image && !imageError && (

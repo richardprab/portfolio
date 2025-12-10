@@ -33,7 +33,7 @@ export const HeroSection = () => {
       id="technical-skills"
       ref={heroRef}
       style={{ opacity: heroOpacity, y: heroY, scale: heroScale }}
-      className="px-4 sm:px-8 lg:px-16 xl:px-24 pt-4 pb-8 sm:pb-16"
+      className="pt-4 pb-8 sm:pb-16"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 max-w-7xl mx-auto min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh] relative">
         <div className="flex flex-col justify-center lg:justify-end order-2 lg:order-1 pb-8 lg:pb-0 relative z-0">

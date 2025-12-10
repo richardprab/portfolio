@@ -11,7 +11,7 @@ export default function Home() {
     <div className="min-h-screen bg-white relative">
       <AnimatedBackground />
       
-      <div className="relative z-10">
+      <div className="relative z-10 px-4 sm:px-8 lg:px-16 xl:px-24">
         <Navigation />
         <HeroSection />
         <ExperienceSection />

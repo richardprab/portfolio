@@ -18,7 +18,7 @@ const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) =>
 };
 
 export const Navigation = () => (
-  <header className="w-full px-4 sm:px-8 lg:px-16 xl:px-24 py-4 sm:py-6 flex items-center justify-center">
+  <header className="w-full py-4 sm:py-6 flex items-center justify-center">
     <nav aria-label="Main navigation" className="flex items-center gap-4 sm:gap-6 lg:gap-8 flex-wrap justify-center">
       {NAV_ITEMS.map((item, index) => (
         <motion.a

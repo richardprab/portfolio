@@ -16,19 +16,23 @@ export const PortfolioSection = () => {
         const response = await fetch('/api/portfolio');
         const data = await response.json();
         
-        if (data.success) {
-          const items = data.data.map((item: any) => ({
+        if (data.success && data.data) {
+          const items = data.data.map((item: {
+            _id: { toString: () => string };
+            title: string;
+            image: string;
+          }) => ({
             id: item._id.toString(),
             title: item.title,
             image: item.image,
           }));
           setPortfolioItems(items);
         } else {
-          setError('Failed to load portfolio items');
+          setError(data.error || 'Failed to load portfolio items');
         }
       } catch (err) {
-        console.error('Error fetching portfolio items:', err);
-        setError('Failed to load portfolio items');
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load portfolio items';
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -46,31 +50,29 @@ export const PortfolioSection = () => {
           description="A comprehensive showcase of my projects."
         />
 
-        <div className="px-4 sm:px-8 lg:px-16 xl:px-24">
-          {loading && (
-            <div className="text-center py-12">
-              <p className="text-gray-600">Loading portfolio items...</p>
-            </div>
-          )}
-          
-          {error && (
-            <div className="text-center py-12">
-              <p className="text-red-600">{error}</p>
-            </div>
-          )}
-          
-          {!loading && !error && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {portfolioItems.map((item, index) => (
-                <PortfolioCard
-                  key={item.id}
-                  item={item}
-                  index={index}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        {loading && (
+          <div className="text-center py-12">
+            <p className="text-gray-600">Loading portfolio items...</p>
+          </div>
+        )}
+        
+        {error && (
+          <div className="text-center py-12">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
+        
+        {!loading && !error && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {portfolioItems.map((item, index) => (
+              <PortfolioCard
+                key={item.id}
+                item={item}
+                index={index}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

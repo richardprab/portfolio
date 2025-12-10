@@ -1,42 +1,54 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import Experience from '@/models/Experience';
+import Experience, { type IExperience } from '@/models/Experience';
+import { createSuccessResponse, createErrorResponse, isValidString, isValidStringArray } from '@/lib/utils';
+import type { ApiResponse } from '@/app/types/api';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse<ApiResponse<IExperience[]>>> {
   try {
     await connectDB();
-    const experiences = await Experience.find({}).sort({ createdAt: -1 });
+    const experiences = await Experience.find({}).lean();
     
-    return NextResponse.json(
-      { success: true, data: experiences },
-      { status: 200 }
-    );
+    return createSuccessResponse(experiences, 200);
   } catch (error) {
-    console.error('Error fetching experiences:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch experiences' },
-      { status: 500 }
-    );
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch experiences';
+    return createErrorResponse(errorMessage, 500, 'FETCH_ERROR');
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse<ApiResponse<IExperience>>> {
   try {
     await connectDB();
     const body = await request.json();
     
-    const experience = await Experience.create(body);
+    if (!isValidString(body.title)) {
+      return createErrorResponse('Title is required and must be a non-empty string', 400, 'VALIDATION_ERROR');
+    }
     
-    return NextResponse.json(
-      { success: true, data: experience },
-      { status: 201 }
-    );
+    if (!isValidStringArray(body.description)) {
+      return createErrorResponse('Description is required and must be a non-empty array of strings', 400, 'VALIDATION_ERROR');
+    }
+    
+    if (!isValidString(body.dates)) {
+      return createErrorResponse('Dates is required and must be a non-empty string', 400, 'VALIDATION_ERROR');
+    }
+    
+    if (body.technologies && !isValidStringArray(body.technologies)) {
+      return createErrorResponse('Technologies must be an array of strings', 400, 'VALIDATION_ERROR');
+    }
+    
+    const experience = await Experience.create({
+      title: body.title.trim(),
+      description: body.description.map((d: string) => d.trim()),
+      dates: body.dates.trim(),
+      image: body.image?.trim() || undefined,
+      technologies: body.technologies?.map((t: string) => t.trim()) || undefined,
+    });
+    
+    return createSuccessResponse(experience, 201);
   } catch (error) {
-    console.error('Error creating experience:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to create experience' },
-      { status: 500 }
-    );
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create experience';
+    return createErrorResponse(errorMessage, 500, 'CREATE_ERROR');
   }
 }
 

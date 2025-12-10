@@ -11,7 +11,7 @@ interface PortfolioCardProps {
 }
 
 export const PortfolioCard = ({ item, index }: PortfolioCardProps) => (
-  <motion.div
+  <motion.article
     className="relative aspect-[4/3] bg-gray-200 rounded-lg overflow-hidden cursor-pointer group"
     initial={{ opacity: 0, y: 50, scale: 0.9 }}
     whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -43,6 +43,6 @@ export const PortfolioCard = ({ item, index }: PortfolioCardProps) => (
         <span className="text-gray-600 text-sm">{item.title}</span>
       </div>
     )}
-  </motion.div>
+  </motion.article>
 );
 
