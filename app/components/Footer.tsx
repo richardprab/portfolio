@@ -15,13 +15,13 @@ export const Footer = () => {
     {
       name: "LinkedIn",
       icon: Linkedin,
-      href: "https://linkedin.com/in/richieprab",
+      href: "https://linkedin.com/in/richardprab",
       hoverColor: "hover:text-[#0077b5]",
     },
     {
       name: "GitHub",
       icon: Github,
-      href: "https://github.com/richieprab",
+      href: "https://github.com/richardprab",
       hoverColor: "hover:text-[#333]", 
     },
   ];
