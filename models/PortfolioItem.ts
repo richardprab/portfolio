@@ -4,7 +4,8 @@ export interface IPortfolioItem extends Document {
   title: string;
   image: string;
   description?: string;
-  link?: string;
+  videoLink?: string;
+  demoLink?: string;
   technologies?: string[];
 }
 
@@ -23,7 +24,11 @@ const PortfolioItemSchema = new Schema<IPortfolioItem>(
       type: String,
       required: false,
     },
-    link: {
+    videoLink: {
+      type: String,
+      required: false,
+    },
+    demoLink: {
       type: String,
       required: false,
     },

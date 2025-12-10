@@ -5,6 +5,7 @@ import { HeroSection } from "./sections/HeroSection";
 import { ExperienceSection } from "./sections/ExperienceSection";
 import { PortfolioSection } from "./sections/PortfolioSection";
 import { AnimatedBackground } from "./components/AnimatedBackground";
+import { Footer } from "./components/Footer";
 
 export default function Home() {
   return (
@@ -17,6 +18,8 @@ export default function Home() {
         <ExperienceSection />
         <PortfolioSection />
       </div>
+      
+      <Footer />
     </div>
   );
 }

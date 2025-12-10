@@ -33,14 +33,15 @@ export const AnimatedBackground = () => {
   // Mouse tracking with spring animation for smooth following
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const springConfig = { damping: 50, stiffness: 200 };
+  const springConfig = { damping: 35, stiffness: 275 }; // Responsive spring
 
   const smoothMouseX = useSpring(mouseX, springConfig);
   const smoothMouseY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    mouseX.set((mousePosition.x - 50) * 0.3); // Scale down and center
-    mouseY.set((mousePosition.y - 50) * 0.3);
+    // Balanced movement - noticeable but not overwhelming
+    mouseX.set((mousePosition.x - 50) * 1.0);
+    mouseY.set((mousePosition.y - 50) * 1.0);
   }, [mousePosition, mouseX, mouseY]);
 
   // Base animation values (will be animated)
@@ -51,22 +52,22 @@ export const AnimatedBackground = () => {
   const blob2BaseY = useMotionValue(65);
   const blob2Rotate = useMotionValue(0);
 
-  // Combine base animation with mouse offset
+  // Combine base animation with mouse offset - balanced intensity
   const blob1X = useTransform(
     [blob1BaseX, smoothMouseX],
-    ([baseX, mouseX]: number[]) => `calc(${baseX}vw + ${mouseX * 0.5}px)`
+    ([baseX, mouseX]: number[]) => `calc(${baseX}vw + ${mouseX * 2.0}px)`
   );
   const blob1Y = useTransform(
     [blob1BaseY, smoothMouseY],
-    ([baseY, mouseY]: number[]) => `calc(${baseY}vh + ${mouseY * 0.5}px)`
+    ([baseY, mouseY]: number[]) => `calc(${baseY}vh + ${mouseY * 2.0}px)`
   );
   const blob2X = useTransform(
     [blob2BaseX, smoothMouseX],
-    ([baseX, mouseX]: number[]) => `calc(${baseX}vw + ${mouseX * -0.4}px)`
+    ([baseX, mouseX]: number[]) => `calc(${baseX}vw + ${mouseX * -1.6}px)`
   );
   const blob2Y = useTransform(
     [blob2BaseY, smoothMouseY],
-    ([baseY, mouseY]: number[]) => `calc(${baseY}vh + ${mouseY * -0.4}px)`
+    ([baseY, mouseY]: number[]) => `calc(${baseY}vh + ${mouseY * -1.6}px)`
   );
 
   // Animate base positions

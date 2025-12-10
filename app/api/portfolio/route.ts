@@ -30,7 +30,8 @@ export async function POST(request: Request): Promise<NextResponse<ApiResponse<I
       title: body.title.trim(),
       image: body.image?.trim() || '',
       description: body.description?.trim() || undefined,
-      link: body.link?.trim() || undefined,
+      videoLink: body.videoLink?.trim() || undefined,
+      demoLink: body.demoLink?.trim() || undefined,
       technologies: body.technologies?.map((t: string) => t.trim()) || undefined,
     });
     
