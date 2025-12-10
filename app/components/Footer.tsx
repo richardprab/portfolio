@@ -17,7 +17,7 @@ export const Footer = () => {
     {
       name: "LinkedIn",
       icon: Linkedin,
-      href: "https://linkedin.com/in/richardprab",
+      href: "https://linkedin.com/in/richard-prab",
       hoverColor: "hover:text-[#0077b5]",
       isSimpleIcon: false,
     },
