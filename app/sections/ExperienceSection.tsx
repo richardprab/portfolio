@@ -4,23 +4,19 @@ import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef } from "react";
 import { useExperiences } from "../hooks/useExperiences";
 import { Experience } from "../types";
+import { GlassCard } from "../components/GlassCard";
 
 export const ExperienceSection = () => {
   const { data: experiences = [], isLoading, error } = useExperiences();
   const sectionRef = useRef<HTMLDivElement>(null);
   
-  // Track scroll progress of the entire section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
   });
   
-  // Parallax offsets for each card (progressive speeds - each card moves slightly faster)
-  // Balanced increments prevent overlap while maintaining parallax effect
   const parallaxOffsets = [40, 55, 70, 85, 100, 115];
   
-  // Create all transforms at the top level (not inside map/loop)
-  // This ensures hooks are called in consistent order and follows React's rules of hooks
   const transform0 = useTransform(scrollYProgress, [0, 1], [0, parallaxOffsets[0]]);
   const transform1 = useTransform(scrollYProgress, [0, 1], [0, parallaxOffsets[1]]);
   const transform2 = useTransform(scrollYProgress, [0, 1], [0, parallaxOffsets[2]]);
@@ -28,14 +24,12 @@ export const ExperienceSection = () => {
   const transform4 = useTransform(scrollYProgress, [0, 1], [0, parallaxOffsets[4]]);
   const transform5 = useTransform(scrollYProgress, [0, 1], [0, parallaxOffsets[5]]);
   
-  // Array of transforms for easy indexing
   const transforms = [transform0, transform1, transform2, transform3, transform4, transform5];
 
   return (
     <section id="experience" className="py-12 sm:py-16 relative z-0 overflow-visible" ref={sectionRef}>
       <div className="max-w-7xl mx-auto overflow-visible">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start overflow-visible">
-          {/* Left Side - Bigger Header (Sticky) */}
           <div className="flex flex-col lg:sticky lg:top-24 lg:self-start overflow-visible">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -58,7 +52,6 @@ export const ExperienceSection = () => {
               </p>
             </motion.div>
 
-            {/* Mobile: Show experiences below header */}
             {!isLoading && !error && (
               <div className="lg:hidden mt-12 space-y-6">
                 {experiences.map((experience, index) => (
@@ -73,7 +66,6 @@ export const ExperienceSection = () => {
             )}
           </div>
 
-          {/* Right Side - Parallax Experience Cards */}
           <div className="hidden lg:block pt-20 overflow-visible">
             {isLoading && (
               <div className="py-12">
@@ -117,12 +109,13 @@ interface ExperienceParallaxCardProps {
 
 const ExperienceParallaxCard = ({ experience, index, yTransform }: ExperienceParallaxCardProps) => {
   return (
-    <motion.div
-      style={yTransform ? { y: yTransform } : undefined}
-      className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm w-full"
+    <GlassCard
+      yTransform={yTransform}
+      variant="white"
+      size="md"
+      className="w-full"
     >
       <div className="space-y-4">
-        {/* Title and Date */}
         <div>
           <h3 className="text-xl font-bold text-black mb-1">
             {experience.title}
@@ -132,7 +125,6 @@ const ExperienceParallaxCard = ({ experience, index, yTransform }: ExperiencePar
           </p>
         </div>
 
-        {/* Description */}
         <div className="space-y-2">
           {experience.description.map((content, idx) => (
             <p key={idx} className="text-gray-600 text-sm leading-relaxed">
@@ -141,13 +133,12 @@ const ExperienceParallaxCard = ({ experience, index, yTransform }: ExperiencePar
           ))}
         </div>
 
-        {/* Technologies */}
         {experience.technologies && experience.technologies.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-2">
             {experience.technologies.map((tech, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1 rounded-full text-xs text-gray-700 bg-gray-50 border border-gray-200"
+                className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-800 bg-white/90 backdrop-blur-md border border-gray-300/60 shadow-sm shadow-black/5 hover:bg-white hover:border-gray-400/60 hover:shadow-md hover:shadow-black/10 transition-all duration-200"
               >
                 {tech}
               </span>
@@ -155,7 +146,7 @@ const ExperienceParallaxCard = ({ experience, index, yTransform }: ExperiencePar
           </div>
         )}
       </div>
-    </motion.div>
+    </GlassCard>
   );
 };
 

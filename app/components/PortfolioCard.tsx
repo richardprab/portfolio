@@ -22,7 +22,7 @@ export const PortfolioCard = ({ item, index, onOpenModal }: PortfolioCardProps) 
 
   return (
     <motion.article
-      className="relative aspect-[4/3] bg-gray-200 rounded-lg overflow-hidden group cursor-pointer"
+      className="relative aspect-[4/3] bg-gray-200 rounded-lg overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300"
     initial={{ opacity: 0, y: 50, scale: 0.9 }}
     whileInView={{ opacity: 1, y: 0, scale: 1 }}
     viewport={{ once: true, margin: "-50px" }}
@@ -63,7 +63,6 @@ export const PortfolioCard = ({ item, index, onOpenModal }: PortfolioCardProps) 
       </div>
     )}
 
-      {/* Hover Overlay with Description and Tech Stack */}
       <motion.div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col justify-center items-center p-4 sm:p-6"
         initial={{ opacity: 0 }}
