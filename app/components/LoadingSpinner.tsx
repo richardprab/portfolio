@@ -20,7 +20,7 @@ export const LoadingSpinner = () => {
       opacity: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
+        ease: [0.4, 0, 0.6, 1] as const
       }
     }
   };
@@ -33,7 +33,7 @@ export const LoadingSpinner = () => {
       transition: {
         duration: 1.2,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: [0.4, 0, 0.6, 1] as const
       }
     }
   };
