@@ -15,10 +15,10 @@ export default function Home() {
       
       <Navigation />
       <div className="relative z-10 px-4 sm:px-8 lg:px-16 xl:px-24 pt-20 sm:pt-24">
-        <HeroSection />
-        <SkillsSection />
-        <ExperienceSection />
-        <PortfolioSection />
+      <HeroSection />
+      <SkillsSection />
+      <ExperienceSection />
+      <PortfolioSection />
       </div>
       
       <Footer />
