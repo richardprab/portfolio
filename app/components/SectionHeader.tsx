@@ -20,18 +20,18 @@ export const SectionHeader = ({ tag, title, description }: SectionHeaderProps) =
     <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
       <div className="flex-1">
         <motion.div 
-          className="inline-block p-[1px] rounded-full mb-6 bg-[linear-gradient(to_right,black_0%,black_10%,rgba(0,0,0,0.3)_40%,rgba(0,0,0,0.1)_60%,#e5e5e5_80%)]"
+          className="section-badge-wrapper mb-6"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <div className="px-4 py-2 rounded-full bg-white">
-            <span className="text-black text-sm font-medium">{tag}</span>
+          <div className="section-badge">
+            <span className="section-badge-text">{tag}</span>
           </div>
         </motion.div>
         <motion.h2 
-          className="text-xl sm:text-2xl lg:text-3xl font-bold text-black leading-tight"
+          className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary leading-tight"
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -47,7 +47,7 @@ export const SectionHeader = ({ tag, title, description }: SectionHeaderProps) =
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+        <p className="text-secondary text-sm sm:text-base leading-relaxed">
           {description}
         </p>
       </motion.div>

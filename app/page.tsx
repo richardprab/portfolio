@@ -7,10 +7,11 @@ import { ExperienceSection } from "./sections/ExperienceSection";
 import { PortfolioSection } from "./sections/PortfolioSection";
 import { AnimatedBackground } from "./components/AnimatedBackground";
 import { Footer } from "./components/Footer";
+import { ThemeToggle } from "./components/ThemeToggle";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen bg-white dark:bg-black relative transition-colors duration-300">
       <AnimatedBackground />
       
       <Navigation />
@@ -22,6 +23,7 @@ export default function Home() {
       </div>
       
       <Footer />
+      <ThemeToggle />
     </div>
   );
 }

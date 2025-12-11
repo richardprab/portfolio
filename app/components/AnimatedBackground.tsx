@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, animate } from "framer-motion";
+import { useTheme } from "../providers/ThemeProvider";
 
 export const AnimatedBackground = () => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -152,14 +155,16 @@ export const AnimatedBackground = () => {
     >
         <motion.div
           className="absolute"
-          style={{
+      style={{ 
             width: '760px',
             height: '760px',
             left: 0,
-            top: 0,
-            background: 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.3) 5px, rgba(84, 171, 251, 0.8) 8%, rgba(27, 108, 251, 0.6) 60%, rgba(84, 171, 251, 0.8) 100%)',
+        top: 0,
+            background: isDark 
+              ? 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.15) 5px, rgba(220, 220, 220, 0.5) 8%, rgba(180, 180, 180, 0.4) 60%, rgba(220, 220, 220, 0.5) 100%)'
+              : 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.3) 5px, rgba(84, 171, 251, 0.8) 8%, rgba(27, 108, 251, 0.6) 60%, rgba(84, 171, 251, 0.8) 100%)',
             borderRadius: '51% 49% 48% 52% / 62% 44% 56% 38%',
-            opacity: 0.25,
+            opacity: isDark ? 0.3 : 0.25,
             filter: 'blur(12px)',
             willChange: 'transform',
             x: blob1X,
@@ -174,10 +179,12 @@ export const AnimatedBackground = () => {
             height: '152px',
             left: 0,
             top: 0,
-            background: '#E6FDFB',
+            background: isDark ? '#e8e8e8' : '#E6FDFB',
             borderRadius: '44% 56% 46% 54% / 36% 50% 50% 64%',
-            boxShadow: '12px 30px 0 -8px rgba(255, 255, 255, 0.15)',
-            opacity: 0.25,
+            boxShadow: isDark 
+              ? '12px 30px 0 -8px rgba(255, 255, 255, 0.05)'
+              : '12px 30px 0 -8px rgba(255, 255, 255, 0.15)',
+            opacity: isDark ? 0.28 : 0.25,
             filter: 'blur(4px)',
             willChange: 'transform',
             x: blob1X,
@@ -196,9 +203,11 @@ export const AnimatedBackground = () => {
             height: '600px',
             left: 0,
             top: 0,
-            background: 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.3) 5px, rgba(196, 113, 237, 0.8) 8%, rgba(138, 43, 226, 0.6) 60%, rgba(196, 113, 237, 0.8) 100%)',
+            background: isDark
+              ? 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.12) 5px, rgba(200, 200, 200, 0.45) 8%, rgba(160, 160, 160, 0.35) 60%, rgba(200, 200, 200, 0.45) 100%)'
+              : 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.3) 5px, rgba(196, 113, 237, 0.8) 8%, rgba(138, 43, 226, 0.6) 60%, rgba(196, 113, 237, 0.8) 100%)',
             borderRadius: '46% 50% 39% 54% / 56% 57% 50% 50%',
-            opacity: 0.25,
+            opacity: isDark ? 0.22 : 0.25,
             filter: 'blur(12px)',
             willChange: 'transform',
             x: blob2X,
@@ -214,10 +223,12 @@ export const AnimatedBackground = () => {
             height: '120px',
             left: 0,
             top: 0,
-            background: '#f0d5ff',
+            background: isDark ? '#d8d8d8' : '#f0d5ff',
             borderRadius: '44% 56% 46% 54% / 36% 50% 50% 64%',
-            boxShadow: '12px 30px 0 -8px rgba(255, 255, 255, 0.15)',
-            opacity: 0.25,
+            boxShadow: isDark
+              ? '12px 30px 0 -8px rgba(255, 255, 255, 0.04)'
+              : '12px 30px 0 -8px rgba(255, 255, 255, 0.15)',
+            opacity: isDark ? 0.22 : 0.25,
             filter: 'blur(4px)',
             willChange: 'transform',
             x: blob2X,
@@ -236,9 +247,11 @@ export const AnimatedBackground = () => {
             height: '660px',
             left: 0,
             top: 0,
-            background: 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.3) 5px, rgba(18, 194, 233, 0.8) 8%, rgba(0, 139, 139, 0.6) 60%, rgba(18, 194, 233, 0.8) 100%)',
+            background: isDark
+              ? 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.1) 5px, rgba(190, 190, 190, 0.4) 8%, rgba(150, 150, 150, 0.3) 60%, rgba(190, 190, 190, 0.4) 100%)'
+              : 'radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.3) 5px, rgba(18, 194, 233, 0.8) 8%, rgba(0, 139, 139, 0.6) 60%, rgba(18, 194, 233, 0.8) 100%)',
             borderRadius: '48% 52% 50% 50% / 58% 46% 54% 42%',
-            opacity: 0.25,
+            opacity: isDark ? 0.2 : 0.25,
             filter: 'blur(12px)',
             willChange: 'transform',
             x: blob3X,
@@ -253,10 +266,12 @@ export const AnimatedBackground = () => {
             height: '132px',
             left: 0,
             top: 0,
-            background: '#d0f0ff',
+            background: isDark ? '#c8c8c8' : '#d0f0ff',
             borderRadius: '44% 56% 46% 54% / 36% 50% 50% 64%',
-            boxShadow: '12px 30px 0 -8px rgba(255, 255, 255, 0.15)',
-            opacity: 0.25,
+            boxShadow: isDark
+              ? '12px 30px 0 -8px rgba(255, 255, 255, 0.03)'
+              : '12px 30px 0 -8px rgba(255, 255, 255, 0.15)',
+            opacity: isDark ? 0.2 : 0.25,
             filter: 'blur(4px)',
             willChange: 'transform',
             x: blob3X,

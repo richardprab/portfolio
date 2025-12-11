@@ -27,10 +27,10 @@ export const GlassCard = ({
   };
 
   const baseStyles = variant === "white" 
-    ? "bg-white/90 backdrop-blur-lg border border-white/60"
+    ? "bg-white/90 dark:bg-white/90 backdrop-blur-lg border border-white/60 dark:border-white/60"
     : accentColor
-    ? "bg-white/90 backdrop-blur-sm border border-gray-200"
-    : "bg-white/90 backdrop-blur-lg border border-white/60";
+    ? "bg-white/90 dark:bg-white/70 backdrop-blur-sm border border-gray-200 dark:border-gray-300"
+    : "bg-white/90 dark:bg-white/90 backdrop-blur-lg border border-white/60 dark:border-white/60";
 
   const shadowStyles = variant === "white"
     ? "shadow-lg shadow-black/5"

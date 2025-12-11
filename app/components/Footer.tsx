@@ -31,14 +31,12 @@ export const Footer = () => {
   ] as const;
 
   return (
-    <footer className="border-t border-gray-200 py-6 sm:py-8">
+    <footer className="border-t border-gray-200 dark:border-gray-800 py-6 sm:py-8">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 px-4 sm:px-8 lg:px-16 xl:px-24">
-        {/* Left side - Copyright */}
-        <p className="text-gray-600 text-sm sm:text-base">
+        <p className="text-secondary text-sm sm:text-base">
           © {currentYear} Richard Prabowo. All rights reserved
         </p>
 
-        {/* Right side - Social Media */}
         <div className="flex items-center gap-4">
           {socialLinks.map((social) => {
             if (social.isSimpleIcon && 'path' in social.icon) {
@@ -49,7 +47,7 @@ export const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.name}
-                  className={`text-gray-600 ${social.hoverColor} transition-colors duration-200`}
+                      className={`text-secondary ${social.hoverColor} transition-colors duration-200`}
                 >
                   <svg
                     role="img"
@@ -70,7 +68,7 @@ export const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.name}
-                  className={`text-gray-600 ${social.hoverColor} transition-colors duration-200`}
+                      className={`text-secondary ${social.hoverColor} transition-colors duration-200`}
                 >
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </a>

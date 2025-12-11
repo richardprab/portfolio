@@ -66,7 +66,7 @@ export const PortfolioModal = ({ item, isOpen, onClose }: PortfolioModalProps) =
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto"
+              className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto"
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
@@ -75,7 +75,7 @@ export const PortfolioModal = ({ item, isOpen, onClose }: PortfolioModalProps) =
             >
               {/* Image Section */}
               {item.image && (
-                <div className="relative w-full h-64 sm:h-80 bg-gray-200">
+                <div className="relative w-full h-64 sm:h-80 bg-gray-200 dark:bg-gray-800">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -90,7 +90,7 @@ export const PortfolioModal = ({ item, isOpen, onClose }: PortfolioModalProps) =
               <div className="flex-1 overflow-y-auto p-6 sm:p-8">
                 {/* Header */}
                 <div className="mb-4">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-black">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-primary">
                     {item.title}
                   </h2>
                 </div>
@@ -98,7 +98,7 @@ export const PortfolioModal = ({ item, isOpen, onClose }: PortfolioModalProps) =
                 {/* Description */}
                 {item.description && (
                   <div className="mb-6">
-                    <div className="text-gray-700 text-base sm:text-lg leading-relaxed">
+                    <div className="text-tertiary text-base sm:text-lg leading-relaxed">
                       {item.description.split('\n').map((line, idx) => (
                         <p key={idx} className="mb-2 last:mb-0">
                           {line}
@@ -111,14 +111,14 @@ export const PortfolioModal = ({ item, isOpen, onClose }: PortfolioModalProps) =
                 {/* Technologies */}
                 {item.technologies && item.technologies.length > 0 && (
                   <div className="mb-6">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
                       Technologies
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {item.technologies.map((tech, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1.5 rounded-full text-sm text-gray-700 bg-gray-100 border border-gray-200"
+                          className="px-3 py-1.5 rounded-full text-sm text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
                         >
                           {tech}
                         </span>
@@ -128,11 +128,12 @@ export const PortfolioModal = ({ item, isOpen, onClose }: PortfolioModalProps) =
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
+                <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                   {item.videoLink && (
                     <motion.button
                       onClick={handleVideoLinkClick}
-                      className="flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
+                      aria-label="Watch video"
+                      className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 cursor-pointer"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -143,7 +144,8 @@ export const PortfolioModal = ({ item, isOpen, onClose }: PortfolioModalProps) =
                   {item.demoLink && (
                     <motion.button
                       onClick={handleDemoLinkClick}
-                      className="flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
+                      aria-label="View more details"
+                      className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 cursor-pointer"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -153,10 +155,11 @@ export const PortfolioModal = ({ item, isOpen, onClose }: PortfolioModalProps) =
                   )}
                   <motion.button
                     onClick={onClose}
+                    aria-label="Close modal"
                     className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors duration-200 cursor-pointer ${
                       item.videoLink || item.demoLink
-                        ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        : "bg-black text-white hover:bg-gray-800"
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                        : "bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
                     }`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
