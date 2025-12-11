@@ -61,10 +61,10 @@ export const ExperienceItem = ({ experience, index }: ExperienceItemProps) => {
         <div className="flex-1">
           {/* Title and Date on same line */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-            <h3 className="text-lg sm:text-xl font-bold text-black">
+            <h3 className="text-lg sm:text-xl font-bold text-black dark:text-black">
               {experience.title}
             </h3>
-            <p className="text-lg sm:text-xl font-bold text-black">
+            <p className="text-lg sm:text-xl font-bold text-black dark:text-black">
               {experience.dates}
             </p>
           </div>

@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useExperiences } from "../hooks/useExperiences";
 import { Experience } from "../types";
 import { GlassCard } from "../components/GlassCard";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export const ExperienceSection = () => {
   const { data: experiences = [], isLoading, error } = useExperiences();
@@ -52,6 +53,12 @@ export const ExperienceSection = () => {
               </p>
             </motion.div>
 
+            {isLoading && (
+              <div className="lg:hidden mt-12">
+                <LoadingSpinner />
+              </div>
+            )}
+            
             {!isLoading && !error && (
               <div className="lg:hidden mt-12 space-y-6">
                 {experiences.map((experience, index) => (
@@ -67,11 +74,7 @@ export const ExperienceSection = () => {
           </div>
 
           <div className="hidden lg:block pt-20 overflow-visible">
-            {isLoading && (
-              <div className="py-12">
-                <p className="text-secondary">Loading experiences...</p>
-              </div>
-            )}
+            {isLoading && <LoadingSpinner />}
             
             {error && (
               <div className="py-12">

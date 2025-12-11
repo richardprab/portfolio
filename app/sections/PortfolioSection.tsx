@@ -6,6 +6,7 @@ import { PortfolioCard } from "../components/PortfolioCard";
 import { PortfolioModal } from "../components/PortfolioModal";
 import { usePortfolioItems } from "../hooks/usePortfolioItems";
 import { PortfolioItem } from "../types";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export const PortfolioSection = () => {
   const { data: portfolioItems = [], isLoading, error } = usePortfolioItems();
@@ -32,11 +33,7 @@ export const PortfolioSection = () => {
           description="A comprehensive showcase of my projects."
         />
 
-        {isLoading && (
-          <div className="text-center py-12">
-            <p className="text-secondary">Loading portfolio items...</p>
-          </div>
-        )}
+        {isLoading && <LoadingSpinner />}
         
         {error && (
           <div className="text-center py-12">
