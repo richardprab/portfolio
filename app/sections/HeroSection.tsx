@@ -30,6 +30,7 @@ export const HeroSection = () => {
 
   return (
     <motion.main 
+      id="home"
       ref={heroRef}
       style={{ opacity: heroOpacity, y: heroY, scale: heroScale }}
       className="pt-6 sm:pt-12 pb-16 sm:pb-20 lg:pt-4 lg:pb-8"

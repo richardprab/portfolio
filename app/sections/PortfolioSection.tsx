@@ -28,7 +28,7 @@ export const PortfolioSection = () => {
     <div className="max-w-7xl mx-auto">
       <SectionHeader
         tag="Portfolio"
-          title={<>A collection of projects<br />that showcase my work</>}
+          title={<>Collection of projects<br />that showcase my work</>}
           description="A comprehensive showcase of my projects."
         />
 

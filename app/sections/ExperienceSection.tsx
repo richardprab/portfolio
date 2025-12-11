@@ -43,7 +43,7 @@ export const ExperienceSection = () => {
                 </div>
               </div>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight mb-6">
-                A Yearly snapshot<br />
+                Retrospective<br />
                 of my technical<br />
                 progression
               </h2>
