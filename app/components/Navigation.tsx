@@ -22,7 +22,7 @@ const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) =>
 };
 
 export const Navigation = () => (
-  <header className="fixed top-0 left-0 right-0 z-50 w-full py-4 sm:py-5 backdrop-blur-sm bg-white/70 dark:bg-black/70">
+  <header className="fixed top-0 left-0 right-0 z-40 w-full py-4 sm:py-5 backdrop-blur-sm bg-white/70 dark:bg-black/70">
     <nav aria-label="Main navigation" className="flex items-center justify-center gap-5 sm:gap-6 lg:gap-8 max-w-7xl mx-auto px-4 sm:px-8">
       <motion.a
         href="#home"
