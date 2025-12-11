@@ -19,8 +19,7 @@ export const LoadingSpinner = () => {
       scale: 1,
       opacity: 1,
       transition: {
-        duration: 0.5,
-        ease: "easeOut"
+        duration: 0.5
       }
     }
   };
@@ -32,8 +31,7 @@ export const LoadingSpinner = () => {
       opacity: [0.3, 1, 0.3],
       transition: {
         duration: 1.2,
-        repeat: Infinity,
-        ease: "easeInOut"
+        repeat: Infinity
       }
     }
   };
@@ -57,8 +55,7 @@ export const LoadingSpinner = () => {
           animate={{ rotate: 360 }}
           transition={{
             duration: 2,
-            repeat: Infinity,
-            ease: "linear"
+            repeat: Infinity
           }}
         />
         
@@ -68,8 +65,7 @@ export const LoadingSpinner = () => {
           animate={{ rotate: -360 }}
           transition={{
             duration: 1.5,
-            repeat: Infinity,
-            ease: "linear"
+            repeat: Infinity
           }}
         />
         
@@ -82,8 +78,7 @@ export const LoadingSpinner = () => {
           }}
           transition={{
             duration: 1.5,
-            repeat: Infinity,
-            ease: "easeInOut"
+            repeat: Infinity
           }}
         />
       </motion.div>
@@ -104,8 +99,7 @@ export const LoadingSpinner = () => {
             transition={{
               delay: index * 0.2,
               duration: 1.2,
-              repeat: Infinity,
-              ease: "easeInOut"
+              repeat: Infinity
             }}
           />
         ))}
@@ -113,4 +107,3 @@ export const LoadingSpinner = () => {
     </motion.div>
   );
 };
-
