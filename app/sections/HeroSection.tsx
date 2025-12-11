@@ -44,11 +44,11 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl xl:text-[11rem] font-thin text-black leading-[0.9] mb-3 sm:mb-4 lg:mb-2 lg:mb-4">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl xl:text-[11rem] font-thin text-primary leading-[0.9] mb-3 sm:mb-4 lg:mb-2 lg:mb-4">
               Richard
             </h1>
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl xl:text-[11rem] font-thin text-black leading-[0.9]"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl xl:text-[11rem] font-thin text-primary leading-[0.9]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -59,12 +59,12 @@ export const HeroSection = () => {
 
           {/* Mobile Description - Below Name */}
           <motion.p
-            className="text-black text-lg sm:text-xl md:text-2xl max-w-lg text-center lg:hidden leading-relaxed mt-8 sm:mt-10 px-4"
+            className="text-primary text-lg sm:text-xl md:text-2xl max-w-lg text-center lg:hidden leading-relaxed mt-8 sm:mt-10 px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Hi! I love creating things that matter and finding the 'why' behind them. I’m endlessly curious and always looking to learn something new.
+            Building with purpose. Uncovering the 'why.' I'm a creator driven by curiosity, always seeking the next opportunity to learn and build things that truly matter.
           </motion.p>
         </div>
 
@@ -113,16 +113,16 @@ export const HeroSection = () => {
 
           {/* Desktop Description Text */}
           <motion.p
-            className="hidden lg:block text-black text-base sm:text-lg max-w-md text-right lg:absolute lg:bottom-0 leading-relaxed mt-4 lg:mt-0 mb-5"
+            className="hidden lg:block text-primary text-base sm:text-lg max-w-md text-right lg:absolute lg:bottom-0 leading-relaxed mt-4 lg:mt-0 mb-5"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            Hi! I love creating things that matter<br className="hidden lg:block"/>
-            and finding the 'why' behind them.<br className="hidden lg:block"/>
-            I’m endlessly curious and<br className="hidden lg:block"/> 
-            always looking to learn<br className="hidden lg:block"/>
-            something new.
+            Building with purpose. Uncovering the 'why.<br className="hidden lg:block"/>
+            I'm a creator driven by curiosity, always<br className="hidden lg:block"/> 
+            seeking the next opportunity to<br className="hidden lg:block"/>
+            learn and build things<br className="hidden lg:block"/>
+            that truly matter.
           </motion.p>
         </div>
       </div>

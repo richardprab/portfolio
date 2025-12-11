@@ -34,13 +34,13 @@ export const PortfolioSection = () => {
 
         {isLoading && (
           <div className="text-center py-12">
-            <p className="text-gray-600">Loading portfolio items...</p>
+            <p className="text-secondary">Loading portfolio items...</p>
           </div>
         )}
         
         {error && (
           <div className="text-center py-12">
-            <p className="text-red-600">
+            <p className="text-red-600 dark:text-red-400">
               {error instanceof Error ? error.message : "Failed to load portfolio items"}
             </p>
           </div>

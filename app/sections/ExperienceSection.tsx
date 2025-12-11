@@ -37,17 +37,17 @@ export const ExperienceSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-block p-[1px] rounded-full mb-8 bg-[linear-gradient(to_right,black_0%,black_10%,rgba(0,0,0,0.3)_40%,rgba(0,0,0,0.1)_60%,#e5e5e5_80%)]">
-                <div className="px-4 py-2 rounded-full bg-white">
-                  <span className="text-black text-sm font-medium">Experience</span>
+              <div className="section-badge-wrapper mb-8">
+                <div className="section-badge">
+                  <span className="section-badge-text">Experience</span>
                 </div>
               </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight mb-6">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-primary leading-tight mb-6">
                 Retrospective<br />
                 of my technical<br />
                 progression
               </h2>
-              <p className="text-gray-600 text-lg sm:text-xl leading-relaxed max-w-lg">
+              <p className="text-secondary text-lg sm:text-xl leading-relaxed max-w-lg">
                 An annual summary that tracks my technical journey and professional development throughout the year.
               </p>
             </motion.div>
@@ -69,13 +69,13 @@ export const ExperienceSection = () => {
           <div className="hidden lg:block pt-20 overflow-visible">
             {isLoading && (
               <div className="py-12">
-                <p className="text-gray-600">Loading experiences...</p>
+                <p className="text-secondary">Loading experiences...</p>
               </div>
             )}
             
             {error && (
               <div className="py-12">
-                <p className="text-red-600">
+                <p className="text-red-600 dark:text-red-400">
                   {error instanceof Error ? error.message : "Failed to load experiences"}
                 </p>
               </div>
@@ -117,17 +117,17 @@ const ExperienceParallaxCard = ({ experience, index, yTransform }: ExperiencePar
     >
       <div className="space-y-4">
         <div>
-          <h3 className="text-xl font-bold text-black mb-1">
+          <h3 className="text-xl font-bold text-primary mb-1">
             {experience.title}
           </h3>
-          <p className="text-base font-semibold text-gray-700">
+          <p className="text-base font-semibold text-tertiary">
             {experience.dates}
           </p>
         </div>
 
         <div className="space-y-2">
           {experience.description.map((content, idx) => (
-            <p key={idx} className="text-gray-600 text-sm leading-relaxed">
+            <p key={idx} className="text-secondary text-sm leading-relaxed">
               {content}
             </p>
           ))}
@@ -138,7 +138,7 @@ const ExperienceParallaxCard = ({ experience, index, yTransform }: ExperiencePar
             {experience.technologies.map((tech, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-800 bg-white/90 backdrop-blur-md border border-gray-300/60 shadow-sm shadow-black/5 hover:bg-white hover:border-gray-400/60 hover:shadow-md hover:shadow-black/10 transition-all duration-200"
+                className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-800 dark:text-gray-200 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border border-gray-300/60 dark:border-gray-600/60 shadow-sm shadow-black/5 dark:shadow-white/5 hover:bg-white dark:hover:bg-gray-700 hover:border-gray-400/60 dark:hover:border-gray-500/60 hover:shadow-md hover:shadow-black/10 dark:hover:shadow-white/10 transition-all duration-200"
               >
                 {tech}
               </span>

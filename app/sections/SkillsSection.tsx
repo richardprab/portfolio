@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { SectionHeader } from "../components/SectionHeader";
 import { GlassCard } from "../components/GlassCard";
+import { useTheme } from "../providers/ThemeProvider";
 import {
   siPython,
   siR,
@@ -35,12 +36,23 @@ import {
 import { FaJava } from "react-icons/fa";
 import { VscAzure } from "react-icons/vsc";
 
+type SimpleIcon = {
+  path: string;
+  hex: string;
+};
+
+type ReactIconComponent = React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+
 interface Skill {
   name: string;
-  icon: any;
+  icon: SimpleIcon | ReactIconComponent;
   isReactIcon?: boolean;
   color?: string;
 }
+
+const isSimpleIcon = (icon: SimpleIcon | ReactIconComponent): icon is SimpleIcon => {
+  return 'path' in icon;
+};
 
 interface SkillCategory {
   name: string;
@@ -98,6 +110,9 @@ const SKILLS: SkillCategory[] = [
 ];
 
 export const SkillsSection = () => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  
   return (
     <section id="skills" className="py-12 sm:py-16 relative z-0">
       <div className="max-w-7xl mx-auto">
@@ -121,10 +136,10 @@ export const SkillsSection = () => {
               }}
             >
               <div className="mb-6">
-                <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">
+                <h3 className="text-2xl sm:text-3xl font-bold text-primary mb-3">
                   {category.name}
                 </h3>
-                <div className="h-px w-20 bg-gradient-to-r from-black to-transparent"></div>
+                <div className="h-px w-20 bg-gradient-to-r from-black dark:from-white to-transparent"></div>
               </div>
 
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 sm:gap-4">
@@ -162,23 +177,28 @@ export const SkillsSection = () => {
                       >
                         {skill.icon ? (
                           skill.isReactIcon ? (
-                            <skill.icon 
-                              className="w-full h-full transition-transform duration-300" 
-                              style={{ color: skill.color ? `#${skill.color}` : '#000000' }}
-                            />
-                          ) : 'path' in skill.icon ? (
+                            (() => {
+                              const IconComponent = skill.icon as ReactIconComponent;
+                              return (
+                                <IconComponent 
+                                  className="w-full h-full transition-transform duration-300" 
+                                  style={{ color: skill.color && !isDark ? `#${skill.color}` : '#000000' }}
+                                />
+                              );
+                            })()
+                          ) : isSimpleIcon(skill.icon) ? (
                             <svg
                               role="img"
                               viewBox="0 0 24 24"
                               className="w-full h-full transition-transform duration-300"
-                              style={{ fill: skill.color ? `#${skill.color}` : '#000000' }}
+                              style={{ fill: skill.color && !isDark ? `#${skill.color}` : '#000000' }}
                               xmlns="http://www.w3.org/2000/svg"
                             >
                               <path d={skill.icon.path} />
                             </svg>
                           ) : null
                         ) : (
-                          <div className="w-full h-full bg-gray-200 rounded flex items-center justify-center">
+                          <div className="w-full h-full bg-gray-200 dark:bg-gray-300 rounded flex items-center justify-center">
                             <span className="text-black text-xs font-bold">{skill.name.charAt(0)}</span>
                           </div>
                         )}
