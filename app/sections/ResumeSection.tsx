@@ -1,17 +1,25 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Eye, FileText, X } from "lucide-react";
+import { Download, Eye, FileText, X, Share2, Check } from "lucide-react";
 import { GlassCard } from "../components/GlassCard";
 import { SectionHeader } from "../components/SectionHeader";
 
+// Constants
+const RESUME_PATH = "/resume.pdf";
+const RESUME_FILENAME = "Richard_Prabowo_Resume.pdf";
+const TOAST_DURATION = 2000;
+const BUTTON_ANIMATION = {
+  whileHover: { scale: 1.05, y: -2 },
+  whileTap: { scale: 0.95 },
+  transition: { type: "spring" as const, stiffness: 400, damping: 17 },
+};
+
 export const ResumeSection = () => {
   const [isViewing, setIsViewing] = useState(false);
-  
-  // Update this path to your actual resume file
-  const resumePath = "/resume.pdf";
+  const [showCopiedToast, setShowCopiedToast] = useState(false);
 
   const handleView = useCallback(() => {
     setIsViewing(true);
@@ -22,13 +30,43 @@ export const ResumeSection = () => {
   }, []);
 
   const handleDownload = useCallback(() => {
-    const link = document.createElement('a');
-    link.href = resumePath;
-    link.download = 'Richard_Prabowo_Resume.pdf';
+    const link = document.createElement("a");
+    link.href = RESUME_PATH;
+    link.download = RESUME_FILENAME;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }, [resumePath]);
+  }, []);
+
+  const handleShare = useCallback(async () => {
+    const resumeUrl = `${window.location.origin}${window.location.pathname}#resume`;
+
+    // Try Web Share API first (mobile devices)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Richard Prabowo - Resume",
+          text: "Check out my resume",
+          url: resumeUrl,
+        });
+        return;
+      } catch (err) {
+        // User cancelled, exit gracefully
+        if ((err as Error).name === "AbortError") {
+          return;
+        }
+      }
+    }
+
+    // Fallback to clipboard
+    try {
+      await navigator.clipboard.writeText(resumeUrl);
+      setShowCopiedToast(true);
+      setTimeout(() => setShowCopiedToast(false), TOAST_DURATION);
+    } catch (err) {
+      console.error("Failed to copy to clipboard:", err);
+    }
+  }, []);
 
   return (
     <section id="resume" className="py-12 sm:py-16 relative z-0">
@@ -72,9 +110,8 @@ export const ResumeSection = () => {
                   <motion.button
                     onClick={handleView}
                     className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 cursor-pointer shadow-lg"
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    {...BUTTON_ANIMATION}
+                    aria-label="View resume"
                   >
                     <Eye className="w-5 h-5" />
                     <span>View Resume</span>
@@ -83,12 +120,21 @@ export const ResumeSection = () => {
                   <motion.button
                     onClick={handleDownload}
                     className="flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer shadow-lg border border-gray-200 dark:border-gray-700"
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    {...BUTTON_ANIMATION}
+                    aria-label="Download resume PDF"
                   >
                     <Download className="w-5 h-5" />
                     <span>Download PDF</span>
+                  </motion.button>
+
+                  <motion.button
+                    onClick={handleShare}
+                    className="flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer shadow-lg border border-gray-200 dark:border-gray-700"
+                    {...BUTTON_ANIMATION}
+                    aria-label="Share resume link"
+                  >
+                    <Share2 className="w-5 h-5" />
+                    <span>Share Link</span>
                   </motion.button>
                 </div>
               </div>
@@ -98,31 +144,52 @@ export const ResumeSection = () => {
 
         {/* Resume Viewer Modal */}
         <AnimatePresence>
-          {isViewing && (
-            <ResumeViewer 
-              resumePath={resumePath} 
-              onClose={handleClose} 
-            />
-          )}
+          {isViewing && <ResumeViewer onClose={handleClose} />}
+        </AnimatePresence>
+
+        {/* Toast Notification */}
+        <AnimatePresence>
+          {showCopiedToast && <Toast message="Link copied to clipboard!" />}
         </AnimatePresence>
       </div>
     </section>
   );
 };
 
+// Toast Notification Component
+interface ToastProps {
+  message: string;
+}
+
+const Toast = ({ message }: ToastProps) => {
+  return (
+    <motion.div
+      className="fixed bottom-6 right-6 z-[100] bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center gap-3"
+      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 20, scale: 0.9 }}
+      transition={{ duration: 0.3 }}
+      role="status"
+      aria-live="polite"
+    >
+      <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
+      <span className="text-black dark:text-white font-medium">{message}</span>
+    </motion.div>
+  );
+};
+
 // Resume Viewer Modal Component
 interface ResumeViewerProps {
-  resumePath: string;
   onClose: () => void;
 }
 
-const ResumeViewer = ({ resumePath, onClose }: ResumeViewerProps) => {
+const ResumeViewer = ({ onClose }: ResumeViewerProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     document.body.style.overflow = "hidden";
-    
+
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -139,7 +206,11 @@ const ResumeViewer = ({ resumePath, onClose }: ResumeViewerProps) => {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [onClose]);
 
-  const modalContent = useMemo(() => (
+  if (!mounted || typeof window === "undefined") {
+    return null;
+  }
+
+  return createPortal(
     <>
       {/* Backdrop */}
       <motion.div
@@ -171,7 +242,7 @@ const ResumeViewer = ({ resumePath, onClose }: ResumeViewerProps) => {
           transition={{ duration: 0.3, ease: "easeOut" }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Close Button Overlay */}
+          {/* Close Button */}
           <div className="absolute top-4 right-4 z-10">
             <motion.button
               onClick={onClose}
@@ -188,20 +259,15 @@ const ResumeViewer = ({ resumePath, onClose }: ResumeViewerProps) => {
           {/* PDF Viewer */}
           <div className="flex-1 overflow-hidden bg-gray-100 dark:bg-gray-100">
             <iframe
-              src={`${resumePath}#view=FitH`}
+              src={`${RESUME_PATH}#view=FitH`}
               className="w-full h-full border-0"
               title="Resume PDF Viewer"
             />
           </div>
         </motion.div>
       </motion.div>
-    </>
-  ), [resumePath, onClose]);
-
-  if (!mounted || typeof window === "undefined") {
-    return null;
-  }
-
-  return createPortal(modalContent, document.body);
+    </>,
+    document.body
+  );
 };
 
