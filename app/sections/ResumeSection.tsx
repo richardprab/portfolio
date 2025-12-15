@@ -30,6 +30,8 @@ export const ResumeSection = () => {
   }, []);
 
   const handleDownload = useCallback(() => {
+    if (typeof document === "undefined") return;
+
     const link = document.createElement("a");
     link.href = RESUME_PATH;
     link.download = RESUME_FILENAME;
@@ -38,7 +40,25 @@ export const ResumeSection = () => {
     document.body.removeChild(link);
   }, []);
 
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
+    if (showCopiedToast) {
+      timeoutId = setTimeout(() => {
+        setShowCopiedToast(false);
+      }, TOAST_DURATION);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [showCopiedToast]);
+
   const handleShare = useCallback(async () => {
+    if (typeof window === "undefined") return;
+
     const resumeUrl = `${window.location.origin}${window.location.pathname}#resume`;
 
     // Try Web Share API first (mobile devices)
@@ -52,19 +72,26 @@ export const ResumeSection = () => {
         return;
       } catch (err) {
         // User cancelled, exit gracefully
-        if ((err as Error).name === "AbortError") {
+        if (err instanceof Error && err.name === "AbortError") {
           return;
+        }
+        // Log other errors for debugging
+        if (process.env.NODE_ENV === "development") {
+          console.error("Share API error:", err);
         }
       }
     }
 
     // Fallback to clipboard
-    try {
-      await navigator.clipboard.writeText(resumeUrl);
-      setShowCopiedToast(true);
-      setTimeout(() => setShowCopiedToast(false), TOAST_DURATION);
-    } catch (err) {
-      console.error("Failed to copy to clipboard:", err);
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(resumeUrl);
+        setShowCopiedToast(true);
+      } catch (err) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to copy to clipboard:", err);
+        }
+      }
     }
   }, []);
 
@@ -83,7 +110,19 @@ export const ResumeSection = () => {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          <GlassCard variant="white" size="lg" className="w-full">
+          <GlassCard variant="white" size="lg" className="w-full relative group">
+            {/* Share Button - Seamless Integration */}
+            <motion.button
+              onClick={handleShare}
+              aria-label="Share resume link"
+              className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-black dark:hover:text-black rounded-full cursor-pointer transition-colors duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 focus:ring-offset-2"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <Share2 className="w-4 h-4" />
+            </motion.button>
+
             <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
               {/* Left side - Icon/Visual */}
               <motion.div
@@ -109,7 +148,7 @@ export const ResumeSection = () => {
                 <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                   <motion.button
                     onClick={handleView}
-                    className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 cursor-pointer shadow-lg"
+                    className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 cursor-pointer shadow-lg focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 focus:ring-offset-2"
                     {...BUTTON_ANIMATION}
                     aria-label="View resume"
                   >
@@ -119,22 +158,12 @@ export const ResumeSection = () => {
 
                   <motion.button
                     onClick={handleDownload}
-                    className="flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer shadow-lg border border-gray-200 dark:border-gray-700"
+                    className="flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer shadow-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400/20 dark:focus:ring-gray-600/20 focus:ring-offset-2"
                     {...BUTTON_ANIMATION}
                     aria-label="Download resume PDF"
                   >
                     <Download className="w-5 h-5" />
                     <span>Download PDF</span>
-                  </motion.button>
-
-                  <motion.button
-                    onClick={handleShare}
-                    className="flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer shadow-lg border border-gray-200 dark:border-gray-700"
-                    {...BUTTON_ANIMATION}
-                    aria-label="Share resume link"
-                  >
-                    <Share2 className="w-5 h-5" />
-                    <span>Share Link</span>
                   </motion.button>
                 </div>
               </div>
@@ -247,7 +276,7 @@ const ResumeViewer = ({ onClose }: ResumeViewerProps) => {
             <motion.button
               onClick={onClose}
               aria-label="Close resume viewer"
-              className="w-10 h-10 flex items-center justify-center bg-white/90 dark:bg-white/90 backdrop-blur-lg border border-white/60 dark:border-white/60 text-black dark:text-black rounded-full cursor-pointer shadow-xl shadow-black/20"
+              className="w-10 h-10 flex items-center justify-center bg-white/90 dark:bg-white/90 backdrop-blur-lg border border-white/60 dark:border-white/60 text-black dark:text-black rounded-full cursor-pointer shadow-xl shadow-black/20 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 focus:ring-offset-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -262,6 +291,8 @@ const ResumeViewer = ({ onClose }: ResumeViewerProps) => {
               src={`${RESUME_PATH}#view=FitH`}
               className="w-full h-full border-0"
               title="Resume PDF Viewer"
+              aria-label="Resume document viewer"
+              loading="lazy"
             />
           </div>
         </motion.div>
