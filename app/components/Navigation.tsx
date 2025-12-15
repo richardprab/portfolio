@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Portfolio", href: "#portfolio" },
+  { label: "Resume", href: "#resume" },
 ];
 
 const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {

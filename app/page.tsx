@@ -5,6 +5,7 @@ import { HeroSection } from "./sections/HeroSection";
 import { SkillsSection } from "./sections/SkillsSection";
 import { ExperienceSection } from "./sections/ExperienceSection";
 import { PortfolioSection } from "./sections/PortfolioSection";
+import { ResumeSection } from "./sections/ResumeSection";
 import { AnimatedBackground } from "./components/AnimatedBackground";
 import { Footer } from "./components/Footer";
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -20,6 +21,7 @@ export default function Home() {
       <SkillsSection />
       <ExperienceSection />
       <PortfolioSection />
+      <ResumeSection />
       </div>
       
       <Footer />
