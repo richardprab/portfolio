@@ -27,6 +27,7 @@ import {
   siJira,
   siFigma,
   siVercel,
+  siDatadog,
 } from "simple-icons/icons";
 import {
   SiAmazonwebservices,
@@ -101,6 +102,7 @@ const SKILLS: SkillCategory[] = [
       { name: "AWS", icon: SiAmazonwebservices, isReactIcon: true, color: "FF9900" },
       { name: "Azure", icon: VscAzure, isReactIcon: true, color: "0078D4" },
       { name: "Docker", icon: siDocker, color: siDocker.hex },
+      { name: "Datadog", icon: siDatadog, color: siDatadog.hex },
       { name: "Git", icon: siGit, color: siGit.hex },
       { name: "Jira", icon: siJira, color: siJira.hex },
       { name: "Figma", icon: siFigma, color: siFigma.hex },
