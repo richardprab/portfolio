@@ -53,7 +53,7 @@ export const LoadingSpinner = () => {
       >
         {/* Outer rotating ring */}
         <motion.div
-          className="absolute inset-0 border-4 border-gray-200 dark:border-gray-800 rounded-full"
+          className="absolute inset-0 border-4 border-line rounded-full"
           animate={{ rotate: 360 }}
           transition={{
             duration: 2,

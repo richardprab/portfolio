@@ -3,19 +3,18 @@
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Eye, FileText, X, Share2, Check } from "lucide-react";
-import { GlassCard } from "../components/GlassCard";
-import { SectionHeader } from "../components/SectionHeader";
+import { Download, Eye, X, Share2, Check, Linkedin } from "lucide-react";
+import { siTelegram, siGithub } from "simple-icons/icons";
+import { Annotation } from "../components/Annotation";
+import { experiences, portfolioItems } from "../data/portfolio";
+import { SUMMIT_ELEVATION } from "../components/three/camps";
+import { useMounted } from "../hooks/useMounted";
 
 // Constants
 const RESUME_PATH = "/resume.pdf";
 const RESUME_FILENAME = "Richard_Prabowo_Resume.pdf";
 const TOAST_DURATION = 2000;
-const BUTTON_ANIMATION = {
-  whileHover: { scale: 1.05, y: -2 },
-  whileTap: { scale: 0.95 },
-  transition: { type: "spring" as const, stiffness: 400, damping: 17 },
-};
+const FIRST_FIELD_YEAR = 2022;
 
 export const ResumeSection = () => {
   const [isViewing, setIsViewing] = useState(false);
@@ -75,7 +74,6 @@ export const ResumeSection = () => {
         if (err instanceof Error && err.name === "AbortError") {
           return;
         }
-        // Log other errors for debugging
         if (process.env.NODE_ENV === "development") {
           console.error("Share API error:", err);
         }
@@ -95,91 +93,120 @@ export const ResumeSection = () => {
     }
   }, []);
 
+  const stats = [
+    { label: "Elevation", value: `${SUMMIT_ELEVATION.toLocaleString("en-US")} m` },
+    { label: "Sites surveyed", value: portfolioItems.length.toString().padStart(2, "0") },
+    { label: "Route legs", value: experiences.length.toString().padStart(2, "0") },
+    { label: "Years in the field", value: `${new Date().getFullYear() - FIRST_FIELD_YEAR}+` },
+  ];
+
   return (
-    <section id="resume" className="py-12 sm:py-16 relative z-0">
+    <section id="resume" className="py-20 sm:py-28 relative z-0">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader
-          tag="Resume"
-          title={<>Professional<br />Overview</>}
-          description="A comprehensive overview of my skills, experience, and qualifications."
-        />
+        {/* No section header here: the summit is the crane shot's stage, and
+            the register carries its own title. */}
+        {/* The register, pinned to the summit flag. */}
+        <Annotation anchorId="summit-register" side="right">
+          <div className="summit-scrim">
+            <p className="instrument text-accent mb-3">Summit register — sign out</p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-        >
-          <GlassCard variant="white" size="lg" className="w-full relative group">
-            {/* Share Button - Seamless Integration */}
-            <motion.button
-              onClick={handleShare}
-              aria-label="Share resume link"
-              className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-black dark:hover:text-black rounded-full cursor-pointer transition-colors duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 focus:ring-offset-2"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              <Share2 className="w-4 h-4" />
-            </motion.button>
+            <dl>
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex items-baseline gap-3 py-1.5 border-b border-line"
+                >
+                  <dt className="instrument text-secondary">{stat.label}</dt>
+                  <span className="leader" aria-hidden="true" />
+                  <dd className="font-mono text-sm text-primary">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
 
-            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-              {/* Left side - Icon/Visual */}
-              <motion.div
-                className="flex-shrink-0"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            <p className="text-secondary text-sm leading-relaxed mt-4 max-w-xs">
+              You made the climb — sign out, take the dossier, and find me on
+              the way down.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-2.5 mt-5">
+              <button
+                onClick={handleView}
+                className="instrument flex items-center gap-2 px-4 py-2.5 bg-foreground text-background hover:opacity-85 transition-opacity duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label="View resume"
               >
-                <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center border-4 border-white/60 dark:border-gray-700/60 shadow-xl shadow-black/10">
-                  <FileText className="w-16 h-16 sm:w-20 sm:h-20 text-black dark:text-white" />
-                </div>
-              </motion.div>
+                <Eye className="w-4 h-4" />
+                <span>View dossier</span>
+              </button>
 
-              {/* Right side - Content and Actions */}
-              <div className="flex-1 text-center lg:text-left">
-                <h3 className="text-2xl sm:text-3xl font-bold text-black dark:text-black mb-3">
-                  Download My Resume
-                </h3>
-                <p className="text-secondary text-base sm:text-lg mb-6 max-w-xl">
-                  View my complete professional background, technical skills, and work experience in a downloadable format.
-                </p>
+              <button
+                onClick={handleDownload}
+                className="instrument flex items-center gap-2 px-4 py-2.5 border border-line-strong text-primary hover:border-accent hover:text-accent transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label="Download resume PDF"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download PDF</span>
+              </button>
+            </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                  <motion.button
-                    onClick={handleView}
-                    className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 cursor-pointer shadow-lg focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 focus:ring-offset-2"
-                    {...BUTTON_ANIMATION}
-                    aria-label="View resume"
-                  >
-                    <Eye className="w-5 h-5" />
-                    <span>View Resume</span>
-                  </motion.button>
-
-                  <motion.button
-                    onClick={handleDownload}
-                    className="flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer shadow-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400/20 dark:focus:ring-gray-600/20 focus:ring-offset-2"
-                    {...BUTTON_ANIMATION}
-                    aria-label="Download resume PDF"
-                  >
-                    <Download className="w-5 h-5" />
-                    <span>Download PDF</span>
-                  </motion.button>
-                </div>
+            {/* The descent: this register is the end of the page. */}
+            <div className="flex items-center justify-between gap-4 mt-6 pt-4 border-t border-line">
+              <span className="instrument text-secondary">
+                Descent via
+              </span>
+              <div className="flex items-center gap-4">
+                {/* Share rides with the other ways off the mountain — as a
+                    lone icon under the dossier buttons it looked stranded. */}
+                <button
+                  onClick={handleShare}
+                  aria-label="Share resume link"
+                  className="text-secondary hover:text-accent transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent pr-4 border-r border-line"
+                >
+                  <Share2 className="w-[18px] h-[18px]" />
+                </button>
+                <a
+                  href="https://t.me/ltee_es"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Telegram"
+                  className="text-secondary hover:text-accent transition-colors duration-200"
+                >
+                  <svg role="img" viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current">
+                    <path d={siTelegram.path} />
+                  </svg>
+                </a>
+                <a
+                  href="https://linkedin.com/in/richard-prab"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="text-secondary hover:text-accent transition-colors duration-200"
+                >
+                  <Linkedin className="w-[18px] h-[18px]" />
+                </a>
+                <a
+                  href="https://github.com/richardprab"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  className="text-secondary hover:text-accent transition-colors duration-200"
+                >
+                  <svg role="img" viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current">
+                    <path d={siGithub.path} />
+                  </svg>
+                </a>
               </div>
             </div>
-          </GlassCard>
-        </motion.div>
+            <p className="instrument text-secondary mt-3">
+              © {new Date().getFullYear()} R. Prabowo — surveyed on foot
+            </p>
+          </div>
+        </Annotation>
 
         {/* Resume Viewer Modal */}
-        <AnimatePresence>
-          {isViewing && <ResumeViewer onClose={handleClose} />}
-        </AnimatePresence>
+        <AnimatePresence>{isViewing && <ResumeViewer onClose={handleClose} />}</AnimatePresence>
 
         {/* Toast Notification */}
-        <AnimatePresence>
-          {showCopiedToast && <Toast message="Link copied to clipboard!" />}
-        </AnimatePresence>
+        <AnimatePresence>{showCopiedToast && <Toast message="Link copied to clipboard" />}</AnimatePresence>
       </div>
     </section>
   );
@@ -193,16 +220,16 @@ interface ToastProps {
 const Toast = ({ message }: ToastProps) => {
   return (
     <motion.div
-      className="fixed bottom-6 right-6 z-[100] bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center gap-3"
-      initial={{ opacity: 0, y: 20, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 20, scale: 0.9 }}
-      transition={{ duration: 0.3 }}
+      className="fixed bottom-6 right-6 z-[100] bg-background border border-line-strong px-5 py-3.5 flex items-center gap-3"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 16 }}
+      transition={{ duration: 0.25 }}
       role="status"
       aria-live="polite"
     >
-      <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-      <span className="text-black dark:text-white font-medium">{message}</span>
+      <Check className="w-4 h-4 text-accent" />
+      <span className="instrument text-primary">{message}</span>
     </motion.div>
   );
 };
@@ -213,10 +240,9 @@ interface ResumeViewerProps {
 }
 
 const ResumeViewer = ({ onClose }: ResumeViewerProps) => {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
 
   useEffect(() => {
-    setMounted(true);
     document.body.style.overflow = "hidden";
 
     return () => {
@@ -264,29 +290,28 @@ const ResumeViewer = ({ onClose }: ResumeViewerProps) => {
         aria-label="Resume viewer"
       >
         <motion.div
-          className="bg-white dark:bg-white rounded-2xl shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col pointer-events-auto relative"
-          initial={{ scale: 0.9, y: 20 }}
+          className="bg-background border border-line-strong w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col pointer-events-auto"
+          initial={{ scale: 0.96, y: 16 }}
           animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.9, y: 20 }}
+          exit={{ scale: 0.96, y: 16 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Close Button */}
-          <div className="absolute top-4 right-4 z-10">
-            <motion.button
+          <div className="instrument text-secondary flex items-center justify-between px-5 h-12 border-b border-line flex-none">
+            <span>
+              <span className="text-accent">Dossier</span> — R. Prabowo
+            </span>
+            <button
               onClick={onClose}
               aria-label="Close resume viewer"
-              className="w-10 h-10 flex items-center justify-center bg-white/90 dark:bg-white/90 backdrop-blur-lg border border-white/60 dark:border-white/60 text-black dark:text-black rounded-full cursor-pointer shadow-xl shadow-black/20 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 focus:ring-offset-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="w-8 h-8 -mr-2 flex items-center justify-center text-secondary hover:text-primary border border-transparent hover:border-line transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
-            </motion.button>
+            </button>
           </div>
 
           {/* PDF Viewer */}
-          <div className="flex-1 overflow-hidden bg-gray-100 dark:bg-gray-100">
+          <div className="flex-1 overflow-hidden bg-white">
             <iframe
               src={`${RESUME_PATH}#view=FitH`}
               className="w-full h-full border-0"
@@ -301,4 +326,3 @@ const ResumeViewer = ({ onClose }: ResumeViewerProps) => {
     document.body
   );
 };
-

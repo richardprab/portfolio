@@ -1,227 +1,81 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { SectionHeader } from "../components/SectionHeader";
-import { GlassCard } from "../components/GlassCard";
-import { useTheme } from "../providers/ThemeProvider";
-import {
-  siPython,
-  siR,
-  siJavascript,
-  siTypescript,
-  siHtml5,
-  siCss,
-  siReact,
-  siNodedotjs,
-  siNextdotjs,
-  siDjango,
-  siFlask,
-  siTailwindcss,
-  siMysql,
-  siMongodb,
-  siPandas,
-  siNumpy,
-  siMetabase,
-  siDocker,
-  siGit,
-  siJira,
-  siFigma,
-  siVercel,
-  siDatadog,
-} from "simple-icons/icons";
-import {
-  SiAmazonwebservices,
-  SiTableau,
-  SiScipy,
-} from "react-icons/si";
-import { FaJava } from "react-icons/fa";
-import { VscAzure } from "react-icons/vsc";
+import { useAscentStore } from "../components/three/store";
+import { SKILLS, SKILL_ITEM_COUNT, isSimpleIcon, type Skill, type ReactIconComponent } from "../data/skills";
 
-type SimpleIcon = {
-  path: string;
-  hex: string;
+const SkillChip = ({ skill }: { skill: Skill }) => {
+  const Icon = skill.isReactIcon ? (skill.icon as ReactIconComponent) : null;
+  return (
+    <span
+      className="group inline-flex items-center gap-1.5 mr-4 mb-1.5 text-sm text-primary"
+      style={{ "--brand": `#${skill.color ?? "888888"}` } as React.CSSProperties}
+    >
+      <span
+        className="w-3.5 h-3.5 flex-none text-secondary transition-colors duration-300 group-hover:[color:var(--brand)]"
+        aria-hidden="true"
+      >
+        {Icon ? (
+          <Icon className="w-3.5 h-3.5" />
+        ) : isSimpleIcon(skill.icon) ? (
+          <svg role="img" viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current" xmlns="http://www.w3.org/2000/svg">
+            <path d={skill.icon.path} />
+          </svg>
+        ) : null}
+      </span>
+      {skill.name}
+    </span>
+  );
 };
-
-type ReactIconComponent = React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
-
-interface Skill {
-  name: string;
-  icon: SimpleIcon | ReactIconComponent;
-  isReactIcon?: boolean;
-  color?: string;
-}
-
-const isSimpleIcon = (icon: SimpleIcon | ReactIconComponent): icon is SimpleIcon => {
-  return 'path' in icon;
-};
-
-interface SkillCategory {
-  name: string;
-  skills: Skill[];
-}
-
-const SKILLS: SkillCategory[] = [
-  {
-    name: "Languages",
-    skills: [
-      { name: "Python", icon: siPython, color: siPython.hex },
-      { name: "Java", icon: FaJava, isReactIcon: true, color: "ED8B00" },
-      { name: "R", icon: siR, color: siR.hex },
-      { name: "JavaScript", icon: siJavascript, color: siJavascript.hex },
-      { name: "TypeScript", icon: siTypescript, color: siTypescript.hex },
-      { name: "HTML", icon: siHtml5, color: siHtml5.hex },
-      { name: "CSS", icon: siCss, color: siCss.hex },
-    ],
-  },
-  {
-    name: "Frameworks",
-    skills: [
-      { name: "React", icon: siReact, color: siReact.hex },
-      { name: "Node.js", icon: siNodedotjs, color: siNodedotjs.hex },
-      { name: "Next.js", icon: siNextdotjs, color: siNextdotjs.hex },
-      { name: "Django", icon: siDjango, color: siDjango.hex },
-      { name: "Flask", icon: siFlask, color: siFlask.hex },
-      { name: "Tailwind CSS", icon: siTailwindcss, color: siTailwindcss.hex },
-    ],
-  },
-  {
-    name: "Data & Databases",
-    skills: [
-      { name: "SQL", icon: siMysql, color: siMysql.hex },
-      { name: "MongoDB", icon: siMongodb, color: siMongodb.hex },
-      { name: "Pandas", icon: siPandas, color: siPandas.hex },
-      { name: "NumPy", icon: siNumpy, color: siNumpy.hex },
-      { name: "Matplotlib", icon: SiScipy, isReactIcon: true, color: "8CAAE6" },
-      { name: "Tableau", icon: SiTableau, isReactIcon: true, color: "E97627" },
-      { name: "Metabase", icon: siMetabase, color: siMetabase.hex },
-    ],
-  },
-  {
-    name: "DevOps & Tools",
-    skills: [
-      { name: "AWS", icon: SiAmazonwebservices, isReactIcon: true, color: "FF9900" },
-      { name: "Azure", icon: VscAzure, isReactIcon: true, color: "0078D4" },
-      { name: "Docker", icon: siDocker, color: siDocker.hex },
-      { name: "Datadog", icon: siDatadog, color: siDatadog.hex },
-      { name: "Git", icon: siGit, color: siGit.hex },
-      { name: "Jira", icon: siJira, color: siJira.hex },
-      { name: "Figma", icon: siFigma, color: siFigma.hex },
-      { name: "Vercel", icon: siVercel, color: siVercel.hex },
-    ],
-  },
-];
 
 export const SkillsSection = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-  
+  // Once the camera docks at the notice board, the scrolling header yields —
+  // the sign carries its own title, and nothing slides over it.
+  const headerYields = useAscentStore((s) => s.anchored && Math.abs(s.campT - 1) < 0.38);
+
   return (
-    <section id="skills" className="py-12 sm:py-16 relative z-0">
+    <section id="skills" className="py-20 sm:py-28 relative z-0">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader
-          tag="Skills"
-          title={<>Technologies I work with<br />and continue to learn</>}
-          description="A comprehensive overview of the technologies, frameworks, and tools I use to build modern applications."
-        />
+        <div
+          className={`transition-opacity duration-500 ${
+            headerYields ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          <SectionHeader
+            camp="Camp 01"
+            designation="Basecamp"
+            elevation="880 m"
+            title={
+              <>
+                Gear manifest —<br />
+                read the notice board
+              </>
+            }
+            blurb={`${SKILL_ITEM_COUNT} items packed across languages, frameworks, data tooling and operations, painted on the basecamp notice board.`}
+          />
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 mt-12">
-          {SKILLS.map((category, categoryIndex) => (
-            <motion.div
-              key={category.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ 
-                duration: 0.7, 
-                delay: categoryIndex * 0.15,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-            >
-              <div className="mb-6">
-                <h3 className="text-2xl sm:text-3xl font-bold text-primary mb-3">
-                  {category.name}
-                </h3>
-                <div className="h-px w-20 bg-gradient-to-r from-black dark:from-white to-transparent"></div>
+        {/* In the 3D experience the manifest is painted onto the notice
+            board itself; this flowing copy serves small screens, no-WebGL
+            visitors and screen readers. */}
+        <div className="anchored-hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 max-w-3xl">
+            {SKILLS.map((category, categoryIndex) => (
+              <div key={category.name}>
+                <div className="instrument text-secondary mb-1.5">
+                  <span className="text-accent">{`0${categoryIndex + 1}`}</span>
+                  {` / ${category.name}`}
+                </div>
+                <div className="border-t border-line pt-2">
+                  {category.skills.map((skill) => (
+                    <SkillChip key={skill.name} skill={skill} />
+                  ))}
+                </div>
               </div>
-
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 sm:gap-4">
-                {category.skills.map((skill, skillIndex) => (
-                  <motion.div
-                    key={skill.name}
-                    className="group relative"
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ 
-                      duration: 0.5, 
-                      delay: categoryIndex * 0.15 + skillIndex * 0.03,
-                      ease: [0.25, 0.46, 0.45, 0.94]
-                    }}
-                    whileHover={{ 
-                      scale: 1.05, 
-                      y: -4,
-                      transition: { duration: 0.3, ease: "easeOut" }
-                    }}
-                  >
-                    <GlassCard
-                      variant="colored"
-                      accentColor={skill.color}
-                      size="sm"
-                      className="h-full flex flex-col items-center justify-center text-center cursor-default"
-                    >
-                      <motion.div 
-                        className="mb-2 flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12"
-                        whileHover={{ 
-                          scale: 1.15,
-                          rotate: [0, -5, 5, -5, 0],
-                          transition: { duration: 0.4 }
-                        }}
-                      >
-                        {skill.icon ? (
-                          skill.isReactIcon ? (
-                            (() => {
-                              const IconComponent = skill.icon as ReactIconComponent;
-                              return (
-                                <IconComponent 
-                                  className="w-full h-full transition-transform duration-300" 
-                                  style={{ color: skill.color && !isDark ? `#${skill.color}` : '#000000' }}
-                                />
-                              );
-                            })()
-                          ) : isSimpleIcon(skill.icon) ? (
-                            <svg
-                              role="img"
-                              viewBox="0 0 24 24"
-                              className="w-full h-full transition-transform duration-300"
-                              style={{ fill: skill.color && !isDark ? `#${skill.color}` : '#000000' }}
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path d={skill.icon.path} />
-                            </svg>
-                          ) : null
-                        ) : (
-                          <div className="w-full h-full bg-gray-200 dark:bg-gray-300 rounded flex items-center justify-center">
-                            <span className="text-black text-xs font-bold">{skill.name.charAt(0)}</span>
-                          </div>
-                        )}
-                      </motion.div>
-                      <motion.span 
-                        className="text-black text-xs font-medium leading-tight"
-                        initial={{ opacity: 0.8 }}
-                        whileHover={{ opacity: 1 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {skill.name}
-                      </motion.span>
-                    </GlassCard>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 };
-

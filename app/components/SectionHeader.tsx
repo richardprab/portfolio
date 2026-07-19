@@ -4,54 +4,45 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
 interface SectionHeaderProps {
-  tag: string;
+  camp: string; // e.g. "CAMP 01"
+  designation: string; // e.g. "BASECAMP"
+  elevation: string; // e.g. "880 M"
   title: string | ReactNode;
-  description: string;
+  blurb?: string;
 }
 
-export const SectionHeader = ({ tag, title, description }: SectionHeaderProps) => (
-  <motion.div 
-    className="pb-8 sm:pb-12"
-    initial={{ opacity: 0, y: 30 }}
+// A survey plate: designation line, title, and a ruled base with a waypoint.
+export const SectionHeader = ({ camp, designation, elevation, title, blurb }: SectionHeaderProps) => (
+  <motion.div
+    className="pb-10 sm:pb-14"
+    initial={{ opacity: 0, y: 24 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-80px" }}
     transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
   >
-    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-      <div className="flex-1">
-        <motion.div 
-          className="section-badge-wrapper mb-6"
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-        >
-          <div className="section-badge">
-            <span className="section-badge-text">{tag}</span>
-          </div>
-        </motion.div>
-        <motion.h2 
-          className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary leading-tight"
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {title}
-        </motion.h2>
-      </div>
-      <motion.div 
-        className="lg:w-1/3 lg:text-right"
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-      >
-        <p className="text-secondary text-sm sm:text-base leading-relaxed">
-          {description}
+    <div className="instrument text-secondary flex items-center gap-3 mb-5">
+      <span className="text-accent">{camp}</span>
+      <span aria-hidden="true">—</span>
+      <span>{designation}</span>
+      <span aria-hidden="true">—</span>
+      <span>{elevation}</span>
+      <span className="leader hidden sm:block" aria-hidden="true" />
+    </div>
+
+    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-primary leading-[1.05] tracking-tight max-w-3xl">
+        {title}
+      </h2>
+      {blurb && (
+        <p className="text-secondary text-sm sm:text-base leading-relaxed lg:max-w-xs lg:text-right">
+          {blurb}
         </p>
-      </motion.div>
+      )}
+    </div>
+
+    <div className="mt-6 flex items-center gap-3" aria-hidden="true">
+      <span className="waypoint-dot" />
+      <span className="h-px flex-1 bg-line" />
     </div>
   </motion.div>
 );
-

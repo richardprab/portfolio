@@ -1,0 +1,6 @@
+# Build scripts stay unapproved: esbuild/sharp/unrs-resolver all ship
+# prebuilt binaries, nothing needs a postinstall here.
+ignoredBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver

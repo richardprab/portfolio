@@ -1,21 +1,23 @@
 @import "tailwindcss";
 
-@variant dark (.dark &);
-
+/* One fixed theme: permanent alpine dusk. Indigo-slate air, warm paper
+   text, lamp-amber accent. There is no day/night mode. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-.dark {
-  --background: #000000;
-  --foreground: #ffffff;
+  --background: #131a29;
+  --foreground: #eae4d6;
+  --accent: #f2a541;
+  /* Hairlines: the survey's ruling ink. */
+  --line: rgba(234, 228, 214, 0.15);
+  --line-strong: rgba(234, 228, 214, 0.4);
   color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -23,7 +25,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -31,61 +33,346 @@ body {
 }
 
 html {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  scroll-behavior: smooth;
 }
 
 .text-primary {
-  color: #000000;
-}
-
-.dark .text-primary {
-  color: #ffffff;
+  color: var(--foreground);
 }
 
 .text-secondary {
-  color: #4b5563;
-}
-
-.dark .text-secondary {
-  color: #9ca3af;
+  color: #98a2b5;
 }
 
 .text-tertiary {
-  color: #374151;
+  color: #c3cad8;
 }
 
-.dark .text-tertiary {
-  color: #d1d5db;
+/* --- Expedition survey language ---------------------------------------- */
+
+/* Instrument text: every label, index and reading on the survey. */
+.instrument {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
-.section-badge-wrapper {
-  display: inline-block;
-  padding: 1px;
-  border-radius: 9999px;
-  background: linear-gradient(to right, black 0%, black 10%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.1) 60%, #e5e5e5 80%);
+/* A sheet of the survey: translucent paper over the terrain. */
+.panel {
+  background: color-mix(in srgb, var(--background) 72%, transparent);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(2px);
 }
 
-.dark .section-badge-wrapper {
-  background: linear-gradient(to right, white 0%, white 10%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.1) 60%, #1a1a1a 80%);
+/* Map registration marks in the four corners of a record. */
+.reg-ticks {
+  --tick: 11px;
+  background-image: linear-gradient(var(--line-strong), var(--line-strong)),
+    linear-gradient(var(--line-strong), var(--line-strong)),
+    linear-gradient(var(--line-strong), var(--line-strong)),
+    linear-gradient(var(--line-strong), var(--line-strong)),
+    linear-gradient(var(--line-strong), var(--line-strong)),
+    linear-gradient(var(--line-strong), var(--line-strong)),
+    linear-gradient(var(--line-strong), var(--line-strong)),
+    linear-gradient(var(--line-strong), var(--line-strong));
+  background-repeat: no-repeat;
+  background-size: 1px var(--tick), var(--tick) 1px, 1px var(--tick), var(--tick) 1px,
+    1px var(--tick), var(--tick) 1px, 1px var(--tick), var(--tick) 1px;
+  background-position: left top, left top, right top, right top, left bottom, left bottom,
+    right bottom, right bottom;
 }
 
-.section-badge {
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  background-color: rgb(255 255 255);
+/* Dotted leader lines, as in a map legend or table of contents. */
+.leader {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  border-bottom: 1px dotted var(--line-strong);
+  transform: translateY(-0.3em);
 }
 
-.dark .section-badge {
-  background-color: rgb(0 0 0);
+/* The waypoint diamond. */
+.waypoint-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
 }
 
-.section-badge-text {
-  color: #000000;
-  font-size: 0.875rem;
-  font-weight: 500;
+/* --- Map callouts ------------------------------------------------------- */
+
+/* Default (mobile / no-WebGL): annotations are ordinary flowing content. */
+.annotation {
+  position: relative;
 }
 
-.dark .section-badge-text {
-  color: #ffffff;
+.annotation-inner {
+  max-width: 26rem;
+}
+
+/* Anchored mode: the projector pins each annotation to its world anchor. */
+html[data-anchored] .annotation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+  /* Outgoing callouts clear quickly so they never linger over the next one. */
+  transition: opacity 0.16s ease;
+  will-change: transform;
+}
+
+html[data-anchored] .annotation[data-visible="1"] {
+  opacity: 1;
+  pointer-events: auto;
+  /* Incoming callouts settle in as soon as the camera frames their anchor. */
+  transition: opacity 0.3s ease 0.03s;
+}
+
+/* Passed sites POP: records scale in from their anchor so every beacon
+   passed is unmissable. */
+html[data-anchored] .annotation .record-pop {
+  transform: scale(0.88);
+  transform-origin: 0% 50%;
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+}
+
+html[data-anchored] .annotation[data-side="left"] .record-pop {
+  transform-origin: 100% 50%;
+}
+
+html[data-anchored] .annotation[data-visible="1"] .record-pop {
+  transform: scale(1);
+}
+
+html[data-anchored] .annotation .annotation-inner {
+  transform: translate(34px, -50%);
+  width: max-content;
+  max-width: min(26rem, 40vw);
+}
+
+html[data-anchored] .annotation[data-side="left"] .annotation-inner {
+  transform: translate(calc(-100% - 34px), -50%);
+}
+
+/* Tall callouts hang below their anchor instead of centering on it, and
+   stand further off so the text clears the camp furniture at the stake. */
+html[data-anchored] .annotation[data-valign="top"] .annotation-inner {
+  transform: translate(100px, -10px);
+}
+
+html[data-anchored] .annotation[data-valign="top"][data-side="left"] .annotation-inner {
+  transform: translate(calc(-100% - 100px), -10px);
+}
+
+/* Content that the 3D world presents natively (painted signage): visually
+   hidden in anchored mode but kept in the accessibility tree; lays out
+   normally on small screens and without WebGL. */
+html[data-anchored] .anchored-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Anchored sections lose their in-flow annotation height; give the walk its
+   scroll runway instead. Heights go on the inner container so sticky
+   children (the site legend) have the full run to stick within. */
+html[data-anchored] #skills > div {
+  min-height: 130vh;
+}
+
+/* The summit is the page's last pixel: sized so the camera completes its
+   crane shot exactly as scrolling bottoms out — no dead scroll after. */
+html[data-anchored] #resume > div {
+  min-height: 84vh;
+}
+
+html[data-anchored] #experience > div {
+  min-height: 320vh;
+}
+
+html[data-anchored] #portfolio > div {
+  min-height: 380vh;
+}
+
+/* Breathing room between camps: each flight gets its own scroll stretch,
+   and the next section's header can't slide over the previous camp's
+   subject (the route-log title used to cross the notice board). */
+html[data-anchored] #experience {
+  padding-top: 38vh;
+}
+
+html[data-anchored] #portfolio {
+  /* Short approach: the camera is on the first site's orbit soon after the
+     switchbacks — a long runway here read as scroll resistance. */
+  padding-top: 24vh;
+}
+
+/* The site legend only steers focus in anchored mode. */
+html:not([data-anchored]) .site-legend {
+  display: none;
+}
+
+/* Cards over the world sit on a scrim: text straight on the mountain goes
+   unreadable wherever mist or snow lightens the backdrop. */
+html[data-anchored] .card-scrim {
+  background: linear-gradient(165deg, rgba(9, 13, 22, 0.86), rgba(9, 13, 22, 0.66));
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  padding: 1.25rem;
+}
+
+/* The summit register floats over the dawn blaze: a dark scrim keeps every
+   line readable against the brightest sky of the journey. It must hold to
+   its last row — the socials and the sign-off sit over sunlit snow. */
+html[data-anchored] .summit-scrim {
+  background: linear-gradient(
+    160deg,
+    rgba(9, 13, 22, 0.88),
+    rgba(9, 13, 22, 0.74)
+  );
+  backdrop-filter: blur(7px);
+  border: 1px solid var(--line);
+  padding: 1.4rem;
+}
+
+/* First-visit nudge toward the sound toggle. */
+.sound-hint {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--background) 82%, transparent);
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.75rem;
+  backdrop-filter: blur(2px);
+  animation: sound-hint-in 0.5s ease both, sound-hint-float 2.8s ease-in-out 0.5s infinite;
+}
+
+@keyframes sound-hint-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes sound-hint-float {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sound-hint {
+    animation: none;
+  }
+}
+
+/* --- Splash: the expedition's title card over the first load ------------- */
+
+.ascent-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 42%, rgba(43, 54, 80, 0.35), transparent 70%),
+    var(--background);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.75s ease;
+}
+
+.ascent-splash[data-leaving="1"] {
+  opacity: 0;
+}
+
+.ascent-splash-mark {
+  width: 64px;
+  height: 64px;
+  animation: ascent-splash-breathe 2.6s ease-in-out infinite;
+}
+
+.ascent-splash-line {
+  width: 148px;
+  height: 1px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.ascent-splash-line span {
+  display: block;
+  width: 40%;
+  height: 100%;
+  background: var(--accent);
+  animation: ascent-splash-sweep 1.4s ease-in-out infinite;
+}
+
+@keyframes ascent-splash-sweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(380%);
+  }
+}
+
+@keyframes ascent-splash-breathe {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascent-splash,
+  .ascent-splash-mark,
+  .ascent-splash-line span {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* The route-log dock: one persistent panel while the switchbacks are
+   walked; only its content crossfades. */
+.leg-dock {
+  position: fixed;
+  right: max(4vw, 2rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(24rem, 30vw);
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+.leg-dock[data-on="1"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+html:not([data-anchored]) .leg-dock {
+  display: none;
 }
