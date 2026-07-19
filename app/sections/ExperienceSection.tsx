@@ -190,9 +190,11 @@ export const ExperienceSection = () => {
             screens, no-WebGL visitors and screen readers. */}
         {!isLoading && !error && (
           <div className="anchored-hidden">
-            <ol className="space-y-12">
+            {/* card-scrim per leg: on small screens the glowing trail runs
+                right behind this copy. */}
+            <ol className="space-y-12 max-w-3xl">
               {experiences.map((experience, index) => (
-                <li key={`${experience.title}-${index}`}>
+                <li key={`${experience.title}-${index}`} className="card-scrim">
                   <LegBody experience={experience} legNumber={experiences.length - index} />
                 </li>
               ))}

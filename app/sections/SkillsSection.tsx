@@ -59,7 +59,10 @@ export const SkillsSection = () => {
             board itself; this flowing copy serves small screens, no-WebGL
             visitors and screen readers. */}
         <div className="anchored-hidden">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 max-w-3xl">
+          {/* card-scrim: on small screens the camera still docks at the 3D
+              board behind this copy — the scrim keeps the two manifests from
+              double-exposing. */}
+          <div className="card-scrim grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 max-w-3xl">
             {SKILLS.map((category, categoryIndex) => (
               <div key={category.name}>
                 <div className="instrument text-secondary mb-1.5">

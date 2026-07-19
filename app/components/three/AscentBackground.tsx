@@ -66,22 +66,11 @@ function AscentExperience() {
   });
   const ready = useAscentStore((s) => s.ready);
   const fallback = useAscentStore((s) => s.fallback);
-  // The 3D journey is a large-screen experience: below the anchored
-  // breakpoint the sections lay out in flow — a presentation designed for
-  // the static contour backdrop. Letting the flying camera run behind that
-  // layout double-exposed the notice board against its own DOM copy and
-  // washed the records out over the bright mist; small screens also skip
-  // downloading the three.js chunk entirely.
-  const [isLarge, setIsLarge] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(min-width: 1024px)").matches;
-  });
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const apply = () => setIsLarge(mq.matches);
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
+  // Small screens keep the full 3D world (per Richard — the mountain ships
+  // everywhere); anchored callouts still need ≥1024px, so the in-flow
+  // layout runs over the live canvas with a dimmer + card scrims for
+  // legibility (see .card-scrim under html[data-ascent-live]).
+  const anchored = useAscentStore((s) => s.anchored);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -97,21 +86,12 @@ function AscentExperience() {
     return () => mq.removeEventListener("change", apply);
   }, [quality]);
 
-  // The fallback flag routes everything downstream: contour backdrop,
-  // splash release, anchored mode off. (A context-loss fallback set by the
-  // canvas itself persists — this effect only re-evaluates on capability
-  // or breakpoint changes.)
-  useEffect(() => {
-    if (webglOk === false || !isLarge) {
-      useAscentStore.setState({ fallback: true, ready: false });
-    } else if (webglOk === true) {
-      useAscentStore.setState({ fallback: false });
-    }
-  }, [webglOk, isLarge]);
-
   // Idle-deferred mount of the 3D chunk to keep LCP untouched.
   useEffect(() => {
-    if (webglOk !== true || !isLarge) return;
+    if (webglOk !== true) {
+      if (webglOk === false) useAscentStore.setState({ fallback: true });
+      return;
+    }
     const w = window as Window & {
       requestIdleCallback?: (cb: () => void) => number;
       cancelIdleCallback?: (id: number) => void;
@@ -127,7 +107,7 @@ function AscentExperience() {
       if (idleId !== undefined && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
       if (timeoutId !== undefined) clearTimeout(timeoutId);
     };
-  }, [webglOk, isLarge]);
+  }, [webglOk]);
 
   // Scroll bridge: section centers become camp anchors; page scroll maps to
   // a continuous camp index, re-measured whenever the layout changes. Leg
@@ -208,8 +188,19 @@ function AscentExperience() {
     };
   }, [ready, fallback]);
 
-  const showCanvas = mount3D && webglOk === true && !fallback && isLarge;
-  const active = ready && !fallback && isLarge;
+  const showCanvas = mount3D && webglOk === true && !fallback;
+  const active = ready && !fallback;
+
+  // Scrim hook for in-flow content: cards darken only while the live world
+  // runs behind them (html[data-ascent-live] in globals.css).
+  useEffect(() => {
+    if (active) {
+      document.documentElement.setAttribute("data-ascent-live", "1");
+    } else {
+      document.documentElement.removeAttribute("data-ascent-live");
+    }
+    return () => document.documentElement.removeAttribute("data-ascent-live");
+  }, [active]);
 
   return (
     <>
@@ -220,8 +211,16 @@ function AscentExperience() {
         aria-hidden="true"
       >
         {showCanvas && <AscentCanvas quality={quality} />}
+        {/* In-flow mode (small screens) reads ON the world, not beside it:
+            a quiet veil keeps the journey visible while the type stays
+            legible over mist and snow. */}
+        {active && !anchored && (
+          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/25 to-background/55" />
+        )}
       </div>
-      {!active && <ContourFallback />}
+      {/* Rings-only while the canvas warms up (the splash covers the wait);
+          the mountain still joins only when there is truly no WebGL. */}
+      {!active && <ContourFallback still={fallback} />}
       {active && <AltitudeHUD />}
       <SoundToggle />
       <SplashScreen />
@@ -230,4 +229,4 @@ function AscentExperience() {
 }
 
 export const AscentBackground = () =>
-  ASCENT_ENABLED ? <AscentExperience /> : <ContourFallback />;
+  ASCENT_ENABLED ? <AscentExperience /> : <ContourFallback still />;

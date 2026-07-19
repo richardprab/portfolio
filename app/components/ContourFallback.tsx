@@ -1,13 +1,28 @@
 "use client";
 
-// Static fallback background for environments without WebGL (and for the
-// NEXT_PUBLIC_ASCENT=0 kill switch): a quiet corner of the same survey map,
-// drawn once in SVG. No animation, no JS work.
-export const ContourFallback = () => (
+// Static fallback background. While the canvas is still warming up this is
+// contour rings only; when there is genuinely no WebGL (or the context died,
+// or the kill switch is on) it also carries a pre-rendered still of the
+// trailhead postcard — the mountain ships everywhere, even without a GPU.
+export const ContourFallback = ({ still = false }: { still?: boolean }) => (
   <div
     className="fixed inset-0 z-0 overflow-hidden pointer-events-none text-primary"
     aria-hidden="true"
   >
+    {still && (
+      <>
+        {/* eslint-disable-next-line @next/next/no-img-element -- fixed
+            full-viewport backdrop; next/image adds nothing here */}
+        <img
+          src="/ascent-still.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* The same veil the live in-flow mode wears, so type stays legible
+            over the snowcap. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/25 to-background/55" />
+      </>
+    )}
     <svg
       className="absolute inset-0 w-full h-full"
       preserveAspectRatio="xMidYMid slice"

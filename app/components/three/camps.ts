@@ -47,7 +47,10 @@ export const BOARD = {
 const cam1Radius = BOARD_RADIUS + BOARD_CAMERA_DISTANCE;
 const cam1X = cam1Radius * Math.cos(BOARD_THETA);
 const cam1Z = cam1Radius * Math.sin(BOARD_THETA);
-const cam1Clearance = boardBaseY + BOARD_CENTER_HEIGHT + 0.35 - terrainHeight(cam1X, cam1Z);
+// The eye rides a full metre above the board's center line: at 0.35 the
+// near-field ground on the right of the dock corridor rose into the sight
+// line and clipped the panel's bottom-right corner (the surveyor stamp).
+const cam1Clearance = boardBaseY + BOARD_CENTER_HEIGHT + 1.05 - terrainHeight(cam1X, cam1Z);
 
 export const CAMPS: Camp[] = [
   {

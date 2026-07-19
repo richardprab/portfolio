@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useAscentStore } from "./three/store";
-import { ASCENT_BUILD } from "../config/features";
 
 // The expedition's title card: a quiet veil over the first load while the
 // world compiles behind it. Dismisses when the canvas reports ready (or the
@@ -69,7 +68,6 @@ export const SplashScreen = () => {
       <div className="ascent-splash-line mt-6">
         <span />
       </div>
-      <p className="instrument text-secondary mt-4 opacity-60">{ASCENT_BUILD}</p>
       {/* Without JS nothing can dismiss the veil: never show it. */}
       <noscript>
         <style>{`.ascent-splash{display:none}`}</style>

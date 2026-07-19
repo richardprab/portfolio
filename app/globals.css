@@ -224,8 +224,10 @@ html:not([data-anchored]) .site-legend {
 }
 
 /* Cards over the world sit on a scrim: text straight on the mountain goes
-   unreadable wherever mist or snow lightens the backdrop. */
-html[data-anchored] .card-scrim {
+   unreadable wherever mist or snow lightens the backdrop. Keyed to the live
+   canvas, not anchored mode — the in-flow (small screen) layout runs over
+   the same world. */
+html[data-ascent-live] .card-scrim {
   background: linear-gradient(165deg, rgba(9, 13, 22, 0.86), rgba(9, 13, 22, 0.66));
   backdrop-filter: blur(6px);
   border: 1px solid var(--line);
@@ -235,7 +237,7 @@ html[data-anchored] .card-scrim {
 /* The summit register floats over the dawn blaze: a dark scrim keeps every
    line readable against the brightest sky of the journey. It must hold to
    its last row — the socials and the sign-off sit over sunlit snow. */
-html[data-anchored] .summit-scrim {
+html[data-ascent-live] .summit-scrim {
   background: linear-gradient(
     160deg,
     rgba(9, 13, 22, 0.88),
