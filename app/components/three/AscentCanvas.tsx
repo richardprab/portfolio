@@ -49,9 +49,11 @@ function InvalidateBridge() {
 
 interface AscentCanvasProps {
   quality: "low" | "high" | "soft";
+  // Fired when the GL context is lost; the parent remounts a fresh canvas.
+  onContextLost: () => void;
 }
 
-export default function AscentCanvas({ quality }: AscentCanvasProps) {
+export default function AscentCanvas({ quality, onContextLost }: AscentCanvasProps) {
   const reducedMotion = useAscentStore((s) => s.reducedMotion);
   const initialPosition = useMemo(() => getCampPosition(0), []);
 
@@ -67,9 +69,14 @@ export default function AscentCanvas({ quality }: AscentCanvasProps) {
       }}
       frameloop={reducedMotion ? "demand" : "always"}
       onCreated={({ gl, invalidate }) => {
+        // Mobile GPUs and software renderers drop the WebGL context when a
+        // tab backgrounds or memory runs short. preventDefault stops the
+        // browser's default teardown; the parent then remounts a fresh
+        // canvas so the LIVE scene returns (in-place restore makes three
+        // read a still-null context and throw).
         gl.domElement.addEventListener("webglcontextlost", (event) => {
           event.preventDefault();
-          useAscentStore.setState({ fallback: true, ready: false });
+          onContextLost();
         });
         useAscentStore.setState({ ready: true });
         invalidate();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Component, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { ContourFallback } from "../ContourFallback";
@@ -22,6 +22,22 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
 
 // Keeps three.js out of the initial chunk; the scene loads after hydration.
 const AscentCanvas = dynamic(() => import("./AscentCanvas"), { ssr: false });
+
+// A lost WebGL context can make three throw mid-render (it reads attributes
+// off a now-null context). Catch that so one bad frame drops to the contour
+// backdrop and triggers a fresh remount, instead of crashing the whole page.
+class CanvasBoundary extends Component<{ onError: () => void; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch() {
+    this.props.onError();
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 function campTFromScroll(y: number, anchors: number[]): number {
   if (anchors.length < 2 || y <= anchors[0]) return 0;
@@ -71,6 +87,27 @@ function AscentExperience() {
   // layout runs over the live canvas with a dimmer + card scrims for
   // legibility (see .card-scrim under html[data-ascent-live]).
   const anchored = useAscentStore((s) => s.anchored);
+
+  // Context-loss recovery. Mobile GPUs and software renderers evict the
+  // WebGL context when a tab backgrounds or memory runs short; the old code
+  // froze on the fallback forever. Instead we remount a FRESH canvas (new
+  // key ⇒ new context) so the live world comes back. A short burst of
+  // failures gives up to the contour backdrop rather than looping.
+  const [canvasGen, setCanvasGen] = useState(0);
+  const lossCountRef = useRef(0);
+  const recoverCanvas = useCallback(() => {
+    useAscentStore.setState({ ready: false });
+    if (lossCountRef.current >= 4) return;
+    lossCountRef.current += 1;
+    window.setTimeout(() => setCanvasGen((g) => g + 1), 600);
+  }, []);
+  // A canvas that has held its context for a few seconds is healthy: clear
+  // the failure budget so a much-later loss still gets its full retries.
+  useEffect(() => {
+    if (!ready) return;
+    const id = window.setTimeout(() => (lossCountRef.current = 0), 4000);
+    return () => window.clearTimeout(id);
+  }, [ready, canvasGen]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -210,7 +247,11 @@ function AscentExperience() {
         }`}
         aria-hidden="true"
       >
-        {showCanvas && <AscentCanvas quality={quality} />}
+        {showCanvas && (
+          <CanvasBoundary key={canvasGen} onError={recoverCanvas}>
+            <AscentCanvas quality={quality} onContextLost={recoverCanvas} />
+          </CanvasBoundary>
+        )}
         {/* In-flow mode (small screens) reads ON the world, not beside it:
             a quiet veil keeps the journey visible while the type stays
             legible over mist and snow. */}
@@ -218,9 +259,10 @@ function AscentExperience() {
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/25 to-background/55" />
         )}
       </div>
-      {/* Rings-only while the canvas warms up (the splash covers the wait);
-          the mountain still joins only when there is truly no WebGL. */}
-      {!active && <ContourFallback still={fallback} />}
+      {/* Contour rings only while the canvas warms up (splash covers the
+          wait) or during a context-loss recovery; the live mountain is the
+          backdrop everywhere WebGL exists. */}
+      {!active && <ContourFallback />}
       {active && <AltitudeHUD />}
       <SoundToggle />
       <SplashScreen />
@@ -229,4 +271,4 @@ function AscentExperience() {
 }
 
 export const AscentBackground = () =>
-  ASCENT_ENABLED ? <AscentExperience /> : <ContourFallback still />;
+  ASCENT_ENABLED ? <AscentExperience /> : <ContourFallback />;
