@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { QueryProvider } from "./providers/QueryProvider";
 
@@ -30,6 +31,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>{children}</QueryProvider>
+        {/* Vercel Web Analytics: privacy-friendly visitor + page-view
+            counts (no cookies). Only sends data once enabled on the project
+            in the Vercel dashboard → Analytics. */}
+        <Analytics />
       </body>
     </html>
   );
