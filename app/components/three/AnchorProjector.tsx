@@ -36,10 +36,21 @@ export const AnchorProjector = () => {
       const x = (v.x * 0.5 + 0.5) * size.width;
       const y = (-v.y * 0.5 + 0.5) * size.height;
       // Keep the callout on the sheet even when its anchor drifts to an
-      // edge. The register gets extra clearance above the footer; everyone
-      // else stays close to their stake so the dot sits on the lamp.
+      // edge. The card is vertically CENTERED on its anchor (translate
+      // -50%), so a fixed margin guess cut off tall cards (the register)
+      // on short windows — the bottom half simply spilled past the
+      // viewport with no scroll to reach it. Clamp using the card's own
+      // measured height instead, so it always fits top AND bottom.
       const cx = Math.min(Math.max(x, 28), size.width - 28);
-      const cy = Math.min(Math.max(y, 130), size.height - (needsFraming ? 150 : 250));
+      const halfH = el.getBoundingClientRect().height / 2;
+      const marginTop = 130;
+      const marginBottom = needsFraming ? 150 : 40;
+      const lower = marginTop + halfH;
+      const upper = size.height - marginBottom - halfH;
+      const cy =
+        lower <= upper
+          ? Math.min(Math.max(y, lower), upper)
+          : (marginTop + (size.height - marginBottom)) / 2;
       el.style.transform = `translate3d(${cx.toFixed(1)}px, ${cy.toFixed(1)}px, 0)`;
 
       // The card opens rightward unless the anchor is clearly on the right

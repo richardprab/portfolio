@@ -14,10 +14,37 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://richardprab-portfolio.vercel.app";
+const OG_DESCRIPTION =
+  "Data and product. A portfolio surveyed as an expedition: four route legs, ten documented sites, one summit.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Richard Prabowo — The Ascent",
-  description:
-    "Data and product. A portfolio surveyed as an expedition: four route legs, ten documented sites, one summit.",
+  description: OG_DESCRIPTION,
+  // Link-preview card (LinkedIn, Slack, iMessage, X, …). The image is the
+  // hero thumbnail rendered from the site itself.
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    title: "Richard Prabowo — The Ascent",
+    description: OG_DESCRIPTION,
+    siteName: "Richard Prabowo",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Richard Prabowo — The Ascent portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Richard Prabowo — The Ascent",
+    description: OG_DESCRIPTION,
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({

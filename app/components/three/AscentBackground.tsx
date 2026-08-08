@@ -11,12 +11,14 @@ import { ASCENT_ENABLED } from "../../config/features";
 import { SECTION_IDS } from "./camps";
 import { useAscentStore } from "./store";
 import { ascentFrame } from "./frame";
+import { ascentAudio } from "../ascentAudio";
 
 // Dev-only handle for headless verification scripts (road/frame probing).
 if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
   (window as unknown as { __ascentDebug?: object }).__ascentDebug = {
     frame: ascentFrame,
     store: useAscentStore,
+    audio: ascentAudio,
   };
 }
 

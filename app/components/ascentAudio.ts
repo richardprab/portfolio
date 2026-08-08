@@ -56,6 +56,22 @@ class AscentAudio {
     return this.on;
   }
 
+  // Dev-only diagnostic snapshot — read by verification scripts, never by
+  // production UI.
+  debugSnapshot() {
+    return {
+      on: this.on,
+      ctxState: this.ctx?.state ?? "none",
+      masterGain: this.master?.gain.value ?? null,
+      chordIndex: this.chordIndex,
+      lastCamp: this.lastCamp,
+      lastLeg: this.lastLeg,
+      lastSite: this.lastSite,
+      fanfarePlayed: this.fanfarePlayed,
+      oscCount: this.chordOscs.flat().length,
+    };
+  }
+
   toggle(): boolean {
     if (this.on) {
       this.setOn(false);

@@ -153,6 +153,11 @@ html[data-anchored] .annotation .annotation-inner {
   transform: translate(34px, -50%);
   width: max-content;
   max-width: min(26rem, 40vw);
+  /* Safety net for windows too short to fit the card even at its best
+     position (the projector clamp handles every normal case) — an
+     internal scrollbar beats content silently clipped past the edge. */
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
 }
 
 html[data-anchored] .annotation[data-side="left"] .annotation-inner {
