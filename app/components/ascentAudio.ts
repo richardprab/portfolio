@@ -107,6 +107,12 @@ class AscentAudio {
     if (this.on) this.ctx?.resume().catch(() => {});
   }
 
+  // Whether the engine is actually audible right now (armed AND the
+  // browser has let the context run) — public, safe for UI to poll.
+  isAudible(): boolean {
+    return this.on && this.ctx?.state === "running";
+  }
+
   private ensure(): void {
     if (this.ctx) return;
     const ctx = new AudioContext();
